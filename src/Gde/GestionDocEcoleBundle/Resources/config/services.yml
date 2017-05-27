@@ -1,0 +1,4 @@
+services:
+#    gde_gestion_doc_ecole.example:
+#        class: Gde\GestionDocEcoleBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
