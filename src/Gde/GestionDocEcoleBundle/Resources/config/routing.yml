@@ -1,3 +1,6 @@
 gde_gestion_doc_ecole_homepage:
-    path:     /hello-world
-    defaults: { _controller: GdeGestionDocEcoleBundle:Default:index }
+    path:       /hello-world
+    defaults:   { _controller: GdeGestionDocEcoleBundle:Default:index }
+gde_gestion_doc_ecole_dbseed:
+    path:       /dbseed
+    defaults:   { _controller: GdeGestionDocEcoleBundle:Default:dbseed }

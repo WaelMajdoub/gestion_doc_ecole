@@ -3,11 +3,137 @@
 namespace Gde\GestionDocEcoleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+// Pour les types doctrine
+use Doctrine\Common\Annotations\AnnotationReader;
+
+// Pour le querybuilder
+use Gde\GestionDocEcoleBundle\Repository\D80UtilisateurRepository;
 
 class DefaultController extends Controller
 {
     public function indexAction()
     {
         return $this->render('GdeGestionDocEcoleBundle:Default:index.html.twig');
+    }
+    public function dbseedAction()
+    {
+        
+       
+        
+        
+        /*
+        //$d80 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D80Utilisateur')->findAll();
+        //$d01 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
+        //$d02 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D02Branche')->findAll();
+        //$d03 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D03Type')->findAll();
+        //$d04 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();*/
+        $DB_Table = array(  "D80Utilisateur",
+                            "D01Periode", 
+                            "D02Branche", 
+                            "D03Type", 
+                            "D04Document");
+        $cr = "\n";
+        $data = "<?php".$cr;
+        $data .= "".$cr;
+        $data .= "namespace AppBundle\DataFixtures\ORM;".$cr;
+        $data .= "".$cr;
+        $data .= "use Doctrine\Common\DataFixtures\FixtureInterface;".$cr;
+        $data .= "use Doctrine\Common\Persistence\ObjectManager;".$cr;
+        /*
+         * Parcours de toutes les tables
+         */
+        for($i = 0;$i < count($DB_Table); $i++)
+        {
+            $data .= "use Gde\GestionDocEcoleBundle\Entity\\".$DB_Table[$i].";".$cr;
+        }
+        $data .= "".$cr;
+        $data .= "class LoadD00Data implements FixtureInterface".$cr;
+        $data .= "{".$cr;
+        $data .= '  public function load(ObjectManager $manager'.$cr;
+        $data .= "  {".$cr;
+        /*
+         * Parcours de toutes les tables
+         */
+        for($i = 0;$i < count($DB_Table); $i++)
+        {
+            $data .= "/**".$cr;
+            $data .= "/* ".$DB_Table[$i].$cr;
+            $data .= " */".$cr;
+            $data .= $DB_Table[$i]."_array = []".$cr;
+            
+
+            /*$repository = $this->getDoctrine()
+                                    ->getManager()
+                                    ->getRepository('GdeGestionDocEcoleBundle:'.$DB_Table[$i]);
+            $qb = $repository->findAll();*/
+            
+            $em = $this->getDoctrine()->getManager();
+            $array = $em->createQuery('select m from GdeGestionDocEcoleBundle:'.$DB_Table[$i].' m')
+                        ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            
+            
+            //$qb = $repository->DBSeed();
+            //foreach ($qb as $item)
+            //    $data .= " */".$item.$cr;
+            
+            /*$repository = $this->getDoctrine()->getDoctrine()
+                                                ->getManager()
+                                                ->getRepository('GdeGestionDocEcoleBundle:'.$DB_Table[$i]);
+                                                //->myFindAll();*/
+            //$query = $repository->c
+            
+           // $query = $bind->createQuery("SELECT * FROM GdeGestionDocEcoleBundle:".$DB_Table[$i])->getScalarResult(); 
+
+            //$products = $query->getResult();     
+                
+            //$qb = $this->c
+                    
+                    
+                    
+             /*       
+            foreach ($bind as $item)
+            {
+                switch($DB_Table[$i])
+                {
+                    case "D80Utilisateur":
+                        $qb = new D80UtilisateurRepository();
+                        $qb = $qb->DBSeed();
+                        
+                        
+                        
+                        $data .= "  ".$item->getUser()." ".$cr;
+                        $data = $qb;
+                        //$data = DB::connection()->getDoctrineColumn($DB_Table[$i], $cle)->getType()->getName();
+                        
+                        break;
+                }
+                
+            }*/
+        }
+        /**
+         * D80Utilisateur
+         *
+        $d80_array = [];
+        // 1
+        $d80 = new D80Utilisateur();
+        $d80->setUser('Stéphane');
+        $d80->setEmail('s.bressani@bluewin.ch');
+        $d80->setPassword('awesome');
+        $d80->setPhoto('null');
+        $manager->persist($d80);
+        $manager->flush();
+        $d80_array[1] = $d80->getId();
+        */
+        
+        
+        
+
+        
+        return $this->render('GdeGestionDocEcoleBundle:Default:dbseed.html.twig', 
+        [
+            'dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR.'src/Gde/DataFixtures/ORM/LoadData.php',
+            'result' => $data,
+            'array' => $array,
+        ]);
     }
 }

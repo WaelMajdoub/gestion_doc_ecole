@@ -10,4 +10,5 @@ namespace Gde\GestionDocEcoleBundle\Repository;
  */
 class D80UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }
