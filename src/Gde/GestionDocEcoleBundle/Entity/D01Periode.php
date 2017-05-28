@@ -35,7 +35,6 @@ class D01Periode
      */
     private $nom;
 
-
     /**
      * Get id
      *
