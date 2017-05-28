@@ -56,10 +56,10 @@ class DefaultController extends Controller
          */
         for($i = 0;$i < count($DB_Table); $i++)
         {
-            $data .= "/**".$cr;
-            $data .= "/* ".$DB_Table[$i].$cr;
-            $data .= " */".$cr;
-            $data .= $DB_Table[$i]."_array = []".$cr;
+            $data .= "  /**".$cr;
+            $data .= "  /* ".$DB_Table[$i].$cr;
+            $data .= "   */".$cr;
+            $data .= "  ".$DB_Table[$i]."_array = []".$cr;
             
 
             /*$repository = $this->getDoctrine()
@@ -70,45 +70,32 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $array = $em->createQuery('select m from GdeGestionDocEcoleBundle:'.$DB_Table[$i].' m')
                         ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-            
-            
-            //$qb = $repository->DBSeed();
-            //foreach ($qb as $item)
-            //    $data .= " */".$item.$cr;
-            
-            /*$repository = $this->getDoctrine()->getDoctrine()
-                                                ->getManager()
-                                                ->getRepository('GdeGestionDocEcoleBundle:'.$DB_Table[$i]);
-                                                //->myFindAll();*/
-            //$query = $repository->c
-            
-           // $query = $bind->createQuery("SELECT * FROM GdeGestionDocEcoleBundle:".$DB_Table[$i])->getScalarResult(); 
-
-            //$products = $query->getResult();     
-                
-            //$qb = $this->c
-                    
-                    
-                    
-             /*       
-            foreach ($bind as $item)
+            for($j = 0;$j < count($array); $j++)
             {
-                switch($DB_Table[$i])
+                $data .= "  // ".$array[$j]['id'].$cr;
+                $data .= "  ".$DB_Table[$i]." = new ".$DB_Table[$i]."();".$cr;
+                foreach ($array[$j] as $k => $v) 
                 {
-                    case "D80Utilisateur":
-                        $qb = new D80UtilisateurRepository();
-                        $qb = $qb->DBSeed();
-                        
-                        
-                        
-                        $data .= "  ".$item->getUser()." ".$cr;
-                        $data = $qb;
-                        //$data = DB::connection()->getDoctrineColumn($DB_Table[$i], $cle)->getType()->getName();
-                        
-                        break;
+                    if ($k == 'id')
+                    {
+                        // Rien faire
+                    }
+                    else
+                    {
+                        if (is_a($v, 'DateTime'))
+                        {
+                          // true
+                        }
+                        elseif (is_string($v))
+                            $data .= "  ".$DB_Table[$i].'->set'.ucfirst($k).'(\''.$v.'\');'.$cr;
+                        else
+                            $data .= "  ".$DB_Table[$i].'->set'.ucfirst($k).'('.$v.');'.$cr;
+                    }
                 }
                 
-            }*/
+            }
+            
+    
         }
         /**
          * D80Utilisateur
