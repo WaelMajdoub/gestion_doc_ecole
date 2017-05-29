@@ -57,12 +57,16 @@ class D01Controller extends Controller
 
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
+                return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01_ok.html.twig',array(
+                    'd01' => $d01,));
+                // Fait un get page?id=...
                 // On redirige vers la page de visualisation de l'annonce nouvellement créée
-                //return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
+                //return $this->redirectToRoute('gde_gestion_doc_ecole_nouveau_form_d01_ok', array('id' => $d01->getId()));
             }
         }
         
         return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
-            'form' => $form->createView(),));
+            'form' => $form->createView(),
+            'd01' => $d01));
     }
 }
