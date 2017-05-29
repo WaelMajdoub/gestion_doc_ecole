@@ -1,3 +1,5 @@
+http://217.182.205.160/gde/app_dev.php
+
 Symfony Standard Edition
 ========================
 
