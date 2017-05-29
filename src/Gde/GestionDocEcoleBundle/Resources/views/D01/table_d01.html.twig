@@ -186,7 +186,7 @@
                     })*/
                     .success(function (data) 
                     {
-                        $scope.items = data; 
+                        $scope.items = data['data']; 
                     })
                     .error(function (data, status, headers, config) 
                     {

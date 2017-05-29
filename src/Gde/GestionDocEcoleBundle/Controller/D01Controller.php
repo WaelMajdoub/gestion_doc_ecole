@@ -23,6 +23,8 @@ use Gde\GestionDocEcoleBundle\Entity\D80Utilisateur;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use Gde\GestionDocEcoleBundle\ClasseDivers\SortArrayClasseDivers;
+
 
 class D01Controller extends Controller
 {
@@ -110,7 +112,47 @@ class D01Controller extends Controller
 
         $serializer = $this->get('jms_serializer');
         $response = $serializer->serialize($users,'json');
-
+        
+        
+        
+        $var = json_decode($response, true);
+        
+        
+        $array['data'] = $var;
+        $sort_array = new SortArrayClasseDivers($array,'nom');
+        $array = $sort_array->getSortAscStr();
+        
+        $response = json_encode($array);
+        //var_dump($array);*/
+        
+        
+        
+        
+        
+        
+        
+        /*$array['data'] = $data;
+        // Tri de ce que je n'ai pas pu trier par la requête sql
+        switch ($sort)
+        {
+            case 'nomgenere':
+                $sort_array = new SortArrayClasseAutreQueStructure($array,'nom_genere');
+                if($sens == 'asc')
+                    $array = $sort_array->getSortAscStr();
+                else
+                    $array = $sort_array->getSortDescStr();
+                break;
+            case 'nomgenerepluriel':
+                $sort_array = new SortArrayClasseAutreQueStructure($array,'nom_genere_pluriel');
+                if($sens == 'asc')
+                    $array = $sort_array->getSortAscStr();
+                else
+                    $array = $sort_array->getSortDescStr();
+                break;
+        }*/
+        
+        
         return new Response($response);
+        //return $this->render('GdeGestionDocEcoleBundle:Debug:vardump.html.twig',array('var' => $array));
     }
 }
