@@ -3,11 +3,6 @@
 namespace Gde\GestionDocEcoleBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-// Pour les types doctrine
-use Doctrine\Common\Annotations\AnnotationReader;
-
-// Pour le querybuilder
-use Gde\GestionDocEcoleBundle\Repository\D80UtilisateurRepository;
 
 class DefaultController extends Controller
 {
@@ -17,16 +12,6 @@ class DefaultController extends Controller
     }
     public function dbseedAction()
     {
-        
-       
-        
-        
-        /*
-        //$d80 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D80Utilisateur')->findAll();
-        //$d01 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
-        //$d02 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D02Branche')->findAll();
-        //$d03 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D03Type')->findAll();
-        //$d04 = $this->getDoctrine()->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();*/
         $DB_Table = array(  "D80Utilisateur",
                             "D01Periode", 
                             "D02Branche", 
