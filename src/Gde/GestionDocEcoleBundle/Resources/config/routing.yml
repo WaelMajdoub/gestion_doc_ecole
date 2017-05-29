@@ -7,3 +7,9 @@ gde_gestion_doc_ecole_dbseed:
 gde_gestion_doc_ecole_nouveau_form_d01:
     path:       /nouveau_form_d01
     defaults:   { _controller: GdeGestionDocEcoleBundle:D01:nouveau_form_d01 }
+gde_gestion_doc_ecole_table_d01:
+    path:       /table_d01
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:table_d01 }
+gde_gestion_doc_ecole_table_d01_json:
+    path:       /table_d01.json
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:table_d01_json }

@@ -1,0 +1,281 @@
+{% extends 'GdeGestionDocEcoleBundle::/template.html.twig' %}
+{% block title %}Table D01{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block search %}
+<div class="form-group">
+    <input ng-model="query" id="top-search" class="form-control" placeholder="Rechercher..." disabled="false" type="text">
+</div>
+{% endblock %}
+{% block body %}
+<!-- Page content -->
+<div id="page-content">
+    <!-- Header -->
+    <div class="content-header">
+        <div class="header-section">
+            <h1>
+                <i class="fa fa-database"></i>Données </i><br><small>D01Periode</small>
+            </h1>
+        </div>
+    </div>
+    <ul class="breadcrumb breadcrumb-top">
+        <li><i class="fa fa-database sidebar-nav-icon"></i> Données</li>
+        <li><i class="fa fa-folder-o"></i> D01Periode</li>
+        <li><i class="fa fa-table"></i> Liste</li>
+    </ul>
+    <!-- END Header -->
+    
+    <!-- InfoBulle -->
+    {% verbatim %}
+        <div ng-hide="hide_bulle_supprimer" ng-repeat="item_delete in items_delete" ng-cloak>
+            <div class="alert alert-success alert-dismissable">               
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> L'élément a été effacé de la table D01Ingredient.<br>Cet élément, identifié par {{item_delete.id}} avait le nom de "{{item_delete.nom}}"
+            </div>
+        </div>
+        <div ng-hide="hide_bulle_erreur" ng-repeat="item_erreur in items_erreur" ng-cloak>
+            <div class="alert alert-danger alert-dismissable">               
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i> <strong>Attention</strong> {{item_erreur.message}}
+            </div>
+            
+        </div>
+    {% endverbatim %}
+    <!-- END InfoBulle -->
+
+    <!-- Content -->
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Liste des ingrédients</strong> <small ng-bind="titre_d01"></small></h2>
+        </div>
+        <div class="table-responsive" ng-cloak>
+            <table class="table table-vcenter table-condensed table-borderless table-hover table-striped dataTable">
+                <thead>
+                    <tr>
+                        <th ng-if="italic_d01 == 'id'">
+                            <i>Id</i>
+                        </th>
+                        <th ng-if="italic_d01 != 'id'">
+                            Id
+                        </th>
+                        <th ng-if="italic_d01 == 'nom'">                                   
+                            <i>Nom</i>
+                        </th>
+                        <th ng-if="italic_d01 != 'nom'">                                     
+                            Nom
+                        </th>
+                        <th class="text-center">Opération</th>
+                    </tr>
+                </thead>
+                <tbody>       
+                    <tr dir-paginate="item in items | filter:ignoreAccents | itemsPerPage: 13" current-page="currentPage">
+{% verbatim %}
+                        <td ng-bind="item.id" class="text-right" style="width: 10%;"></td>
+                        <td ng-bind="item.nom" style="width: 70%;"></td>
+                        <td style="width: 20%;">
+                            <center><a href="{{item.voir}}" data-toggle="tooltip" title="Voir"  class="btn btn-xs btn-default"><i class="fa fa-expeditedssl"> Voir</i></a>
+                            &nbsp;<a href="{{item.editer}}" data-toggle="tooltip" title="Éditer" class="btn btn-xs btn-default"><i class="fa fa-pencil"> Éditer</i></a>
+                            &nbsp;<a href="javascript:void(0)" ng-click="delete_row(item.id,'d01')" data-toggle="tooltip" title="Effacer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Effacer</a>
+                            </center> 
+                        </td>
+{% endverbatim %}
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            <div class="btn-group btn-group-sm pull-right">
+                                <div class="btn-group btn-group-sm dropup">
+                                    <a href="javascript:void(0)" class="btn btn-primary pull-right dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                                    <ul class="dropdown-menu dropdown-custom dropdown-menu-right">
+                                        <li class="dropdown-header"><i class="fa fa-edit pull-right"></i> Saisie</li>
+                                        <li>
+                                            <a href="nouveau_form_d01">Nouvelle saisie</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="{{asset('angular/dirPagination.tpl.html')}}"></dir-pagination-controls>
+        </div>  
+        <div ng-hide="hide_chargement_table">
+            <center><i class="fa fa-spinner fa-spin fa-4x" ></i></center>
+        </div>
+    </div>
+    <!-- END Content -->    
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript"> 
+    function AngularController($scope, $http, $timeout) 
+    {
+        $scope.hide_bulle_supprimer = true;
+        $scope.hide_bulle_erreur = true;
+        $scope.hide_chargement_table = true;
+        $scope.quantity = 13;
+        //$scope.order = "id";
+        $scope.query = "";
+        $scope.ignoreAccents = function(param) 
+        {   
+            if (!$scope.query)
+                return true; 
+            var search = removeAccents($scope.query.toLowerCase());
+            var item_list = removeAccents(param.search.toLowerCase());
+            return item_list.indexOf(search) > -1;
+        };
+        $scope.items_delete = [];
+        $scope.items = [];
+        $scope.titre_d01 = '';
+        $scope.italic_d01 = '';
+        $scope.table = 'd01';
+        $scope.sort = 'id';
+        $scope.sens = 'asc';
+        $scope.currentPage = 1;
+        /*
+         * Rafraichis la table en Ajax
+         * les champs table, sort et sens sont passé en variable globale de la
+         * fonction dans $scope afin d'être utilisé par la fonction 
+         * $scope.delete_row(id)
+         */
+        $scope.refresh_table = function(table,sort,sens,currentPage)
+        {
+            $scope.items = [];
+            $scope.hide_chargement_table = false;
+            $scope.table = table;
+            $scope.sort = sort;
+            $scope.sens = sens;
+            $scope.currentPage = currentPage;
+            switch ($scope.table)
+            {
+                case 'd01':
+                    $scope.titre_d01 = 'par';
+                    $scope.italic_d01 = $scope.sort;
+                    switch ($scope.sort)
+                    {
+                        case 'id':
+                            $scope.titre_d01 += " l'identifiant";
+                            break;
+                        case 'nom':
+                            $scope.titre_d01 += " le nom de l'ingrédient";
+                            break;
+                        default:
+                            $scope.titre_d01 += " '"+$scope.sort+"'";
+                            break;
+                    }
+                    switch ($scope.sens)
+                    {
+                        case 'asc':
+                            $scope.titre_d01 += " ordre ascendant";
+                            break;
+                        case 'desc':
+                            $scope.titre_d01 += " ordre descendant";
+                            break;
+                        default:
+                            $scope.titre_d01 += " '"+$scope.sens+"'";
+                            break;
+                    }
+                    var url = 'table_'+$scope.table+'_'+$scope.sort+'_'+$scope.sens+'.json';
+                    url = '{{asset('json.json')}}';
+                    url = 'table_d01.json';
+                    $http.get(url)
+                    
+                    /*$http({
+                      method: 'GET',
+                      url: url
+                    })*/
+                    .success(function (data) 
+                    {
+                        $scope.items = data; 
+                    })
+                    .error(function (data, status, headers, config) 
+                    {
+                        // Message
+                        var message_erreur = "Impossible de charger la table D01Ingredient";
+                        // Bulle
+                        $scope.hide_bulle_erreur = false;
+                        $scope.items_erreur =    
+                        [
+                            {message: message_erreur}
+                        ];
+                        // Log
+                        $http(
+                        {
+                            method: 'POST',
+                            url: 'log_critical_httpgeterror',
+                            data: $.param(
+                            {
+                                url: url,
+                                message: message_erreur
+                            }),
+                            headers: 
+                            {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                        });
+                    });
+                    break;
+            }
+            // 0.5 seconde de timeout
+            $timeout(function()
+            {
+                $scope.hide_chargement_table = true;
+            },500);
+        }
+        /*
+         * Efface un ellement en ajax
+         */
+        $scope.delete_row = function(id,table)
+        {
+            $scope.items = [];
+            $scope.hide_chargement_table = false;
+            table = $scope.table;
+            $scope.hide_bulle_supprimer = false;
+            var url = 'delete_row_'+$scope.table+'_'+id+'.json'
+            $http.get(url)
+            .success(function (data) 
+            {
+                $scope.items_delete = data["data"];   
+                $scope.refresh_table($scope.table,$scope.sort,$scope.sens,$scope.currentPage);
+                // 0.5 seconde de timeout
+                $timeout(function()
+                {
+                    $scope.hide_chargement_table = true;
+                },500);
+            })
+            .error(function (data, status, headers, config) 
+            {
+                // Message
+                var message_erreur = "Impossible d'effacer dans la table D01Ingredient";
+                // Bulle
+                $scope.hide_bulle_erreur = false;
+                $scope.items_erreur =    
+                [
+                    {message: message_erreur}
+                ];
+                // Log
+                $http(
+                {
+                    method: 'POST',
+                    url: 'log_critical_httpgeterror',
+                    data: $.param(
+                    {
+                        url: url,
+                        message: message_erreur
+                    }),
+                    headers: 
+                    {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                });
+            });   
+        }
+        // Au chargement de la page
+        $scope.refresh_table('d01','id','asc',1);
+    }	
+    var app = angular.module("GDEBackEnd", ['angularUtils.directives.dirPagination']);
+    app.controller("AngularController", AngularController);  
+</script>
+<script type="text/javascript" src="{{asset('js/removeAccent.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/angular/dirPagination.js')}}"></script>
+{% endblock %}

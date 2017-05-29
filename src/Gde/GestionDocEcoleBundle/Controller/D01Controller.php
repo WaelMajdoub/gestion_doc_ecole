@@ -20,6 +20,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Gde\GestionDocEcoleBundle\Entity\D01Periode;
 use Gde\GestionDocEcoleBundle\Entity\D80Utilisateur;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+
+
 class D01Controller extends Controller
 {
     /**
@@ -81,5 +85,32 @@ class D01Controller extends Controller
                 'success' => 0,
                 'd01' => $d01));
         }
+    }
+    /**
+     * @name        table_d01Action()
+     * @return      void
+     */
+    public function table_d01Action()
+    {
+        return $this->render('GdeGestionDocEcoleBundle:D01:table_d01.html.twig');
+    }
+    /**
+     * @name    table_d01_jsonAction()
+     * @return  void
+     */
+    public function table_d01_jsonAction()
+    {
+        /*
+        $serializedEntity = $this->container->get('serializer')->serialize($entity, 'json');
+        return new Response($serializedEntity);
+         * */
+        
+        $em = $this->get('doctrine')->getManager();
+        $users = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
+
+        $serializer = $this->get('jms_serializer');
+        $response = $serializer->serialize($users,'json');
+
+        return new Response($response);
     }
 }
