@@ -49,17 +49,17 @@ class DefaultController extends Controller
         $data .= "".$cr;
         $data .= "class LoadD00Data implements FixtureInterface".$cr;
         $data .= "{".$cr;
-        $data .= '  public function load(ObjectManager $manager'.$cr;
+        $data .= '  public function load(ObjectManager $manager)'.$cr;
         $data .= "  {".$cr;
         /*
          * Parcours de toutes les tables
          */
         for($i = 0;$i < count($DB_Table); $i++)
         {
-            $data .= "  /**".$cr;
-            $data .= "  /* ".$DB_Table[$i].$cr;
-            $data .= "   */".$cr;
-            $data .= "  ".$DB_Table[$i]."_array = []".$cr;
+            $data .= "      /**".$cr;
+            $data .= "      /* ".$DB_Table[$i].$cr;
+            $data .= "       */".$cr;
+            $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2])."_array = [];".$cr;
             
 
             /*$repository = $this->getDoctrine()
@@ -72,8 +72,8 @@ class DefaultController extends Controller
                         ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
             for($j = 0;$j < count($array); $j++)
             {
-                $data .= "  // ".$array[$j]['id'].$cr;
-                $data .= "  ".$DB_Table[$i]." = new ".$DB_Table[$i]."();".$cr;
+                $data .= "      // ".$array[$j]['id'].$cr;
+                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2])." = new ".$DB_Table[$i]."();".$cr;
                 foreach ($array[$j] as $k => $v) 
                 {
                     if ($k == 'id')
@@ -82,40 +82,43 @@ class DefaultController extends Controller
                     }
                     else
                     {
-                        if (is_a($v, 'DateTime'))
+                        if (($k[0] == 'i' && $k[1] == 'd') && (strlen($k) >= 5))
                         {
-                          // true
+                            // Spécial clé, laravel est plus pratique pour ça...
+                            $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'($'.$k[3].$k[4].$k[5].'_array['.$v.']);'.$cr;
                         }
-                        elseif (is_string($v))
-                            $data .= "  ".$DB_Table[$i].'->set'.ucfirst($k).'(\''.$v.'\');'.$cr;
                         else
-                            $data .= "  ".$DB_Table[$i].'->set'.ucfirst($k).'('.$v.');'.$cr;
+                        {
+                            if (is_a($v, 'DateTime'))
+                            {
+                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(date_create(\''.$v->format('Y-m-d').'\'));'.$cr;
+                            }
+                            elseif (is_string($v))
+                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(\''.$v.'\');'.$cr;
+                            else
+                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'('.$v.');'.$cr;
+                        }
                     }
                 }
+                
+                
+                $data .= '      $manager->persist($'.strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).');'.$cr;
+                $data .= '      $manager->flush();'.$cr;
+                $data .= '      $'.strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'_array['.$array[$j]['id'].'] = $'.strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->getId();'.$cr;
                 
             }
             
     
         }
-        /**
-         * D80Utilisateur
-         *
-        $d80_array = [];
-        // 1
-        $d80 = new D80Utilisateur();
-        $d80->setUser('Stéphane');
-        $d80->setEmail('s.bressani@bluewin.ch');
-        $d80->setPassword('awesome');
-        $d80->setPhoto('null');
-        $manager->persist($d80);
-        $manager->flush();
-        $d80_array[1] = $d80->getId();
-        */
-        
-        
-        
+        $data .= '  }'.$cr;
+        $data .= $cr;
+        $data .= '  public function getOrder()'.$cr;
+        $data .= '  {'.$cr;
+            $data .= '      return 1;'.$cr;
+        $data .= '  }'.$cr;
+        $data .= '}'.$cr;
+        $data .= '?>';
 
-        
         return $this->render('GdeGestionDocEcoleBundle:Default:dbseed.html.twig', 
         [
             'dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR.'src/Gde/DataFixtures/ORM/LoadData.php',
