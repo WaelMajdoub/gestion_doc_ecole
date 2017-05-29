@@ -4,9 +4,6 @@ gde_gestion_doc_ecole_homepage:
 gde_gestion_doc_ecole_dbseed:
     path:       /dbseed
     defaults:   { _controller: GdeGestionDocEcoleBundle:Default:dbseed }
-gde_gestion_doc_ecole_get_nouveau_form_d01:
+gde_gestion_doc_ecole_nouveau_form_d01:
     path:       /nouveau_form_d01
-    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:get_nouveau_form_d01 }
-gde_gestion_doc_ecole_post_nouveau_form_d01:
-    path:       /nouveau_form_d01_form
-    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:post_nouveau_form_d01 }
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:nouveau_form_d01 }

@@ -22,17 +22,12 @@ use Gde\GestionDocEcoleBundle\Entity\D80Utilisateur;
 
 class D01Controller extends Controller
 {
-    private $d01;
-    private $form;
     /**
-     * @name        set_nouveau_form_d01Action()
-     * @description Cette fonction permet de préparer le formulaire
-     *              Fonction privé pour meilleur lisibilité du code entre les
-     *              fonctions publics get_nouveau_form_d01Action() et
-     *              post_nouveau_form_d01Action()
+     * @name        nouveau_form_d01Action()
+     * @param       Request $request
      * @return      void
      */
-    private function set_nouveau_form_d01Action()
+    public function nouveau_form_d01Action(Request $request)
     {
         /*
          * Toutes les saisies se font par l'utilisateur s.bressani@bluewin.ch
@@ -53,58 +48,38 @@ class D01Controller extends Controller
         $formBuilder->add('nom',        TextType::class)
                     ->add('save',       SubmitType::class);
         $form = $formBuilder->setMethod("POST")
-                            ->setAction('nouveau_form_d01_form')->getForm();
-        /*
-         * Set des variables globale private
-         */
-        $this->d01 = $d01;
-        $this->form = $form;
-    }
-    /*
-     * @name        get_nouveau_form_d01Action()
-     * @description GET, Formulaire
-     * @return      void
-     */
-    public function get_nouveau_form_d01Action()
-    {
-        $this->set_nouveau_form_d01Action();
-        return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
-            'sw_edit' => 2,
-            'form' => $this->form->createView(),
-            'success' => 0,
-            'd01' => $this->d01));
-    }
-    /*
-     * @name        post_nouveau_form_d01Action()
-     * @description POST, Formulaire, écriture dans D01Periode
-     * @return      void
-     */
-    public function post_nouveau_form_d01Action(Request $request)
-    {
-        $this->set_nouveau_form_d01Action();
+                            ->setAction('nouveau_form_d01')->getForm();
         // Si la requête est en POST
         if ($request->isMethod('POST')) 
         {
             // On fait le lien Requête <-> Formulaire
             // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
-            $this->form->handleRequest($request);
+            $form->handleRequest($request);
 
             // On vérifie que les valeurs entrées sont correctes
             // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-            if ($this->form->isValid()) 
+            if ($form->isValid()) 
             {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($this->d01);
+                $em->persist($d01);
                 $em->flush();
 
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
                 return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
                     'sw_edit' => 2,
-                    'form' => $this->form->createView(),
+                    'form' => $form->createView(),
                     'success' => 1,
-                    'd01' => $this->d01));
+                    'd01' => $d01));
             }
+        }
+        else
+        {
+            return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
+                'sw_edit' => 2,
+                'form' => $form->createView(),
+                'success' => 0,
+                'd01' => $d01));
         }
     }
 }
