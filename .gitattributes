@@ -1,1 +1,6 @@
 .rb linguist-language=php
+/vendor export-ignore
+/web export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/readme.md export-ignore
