@@ -1,8 +1,92 @@
 {% extends 'GdeGestionDocEcoleBundle::/template.html.twig' %}
 {% block title %}D01{% endblock %}
 {% block stylesheets %}{% endblock %}
-{% block search %}{% endblock %}
+{% block search %}
+<div class="form-group">
+    <input ng-model="query" id="top-search" class="form-control" placeholder="Rechercher..." disabled="false" type="text">
+</div>
+{% endblock %}
 {% block body %}
+<!-- Page content -->
+<div id="page-content">
+    <!-- Header -->
+    <div class="content-header">
+        <div class="header-section">
+            <h1>
+                <i class="fa fa-database"></i>Données </i><br><small>D01Ingredient</small>
+            </h1>
+        </div>
+    </div>
+    <ul class="breadcrumb breadcrumb-top">
+        <li><i class="fa fa-database sidebar-nav-icon"></i> Données</li>
+        <li><i class="fa fa-folder-o"></i> D01Ingredient</li>
+        {# Affichage = 0 #}
+        {% if sw_edit == 0 %}
+            <li><a href="admin_table_d01"><i class="fa fa-table"></i></a> <a href="admin_table_d01">Liste</a></li>
+            <li><i class="fa fa-edit"></i> Affichage</li>
+        {% endif %}
+        {# Edition = 1 #}
+        {% if sw_edit == 1 %}
+            <li><a href="admin_table_d01"><i class="fa fa-table"></i></a> <a href="admin_table_d01">Liste</a></li>
+            <li><i class="fa fa-edit"></i> Édition</li>
+        {% endif %}
+        {# Nouveau = 2#}
+        {% if sw_edit == 2 %}
+            <li><a href="admin_table_d01"><i class="fa fa-table"></i></a> <a href="admin_table_d01">Liste</a></li>
+            <li><i class="fa fa-edit"></i> Nouvelle saisie</li>
+        {% endif %}
+    </ul>
+    <!-- END Header -->
+    
+    <!-- InfoBulle -->
+    {% if success == 'oui' %}
+        {# Affichage = 0 #}
+        {% if sw_edit == 0 %}
+            {# {!! HTML::bulle("success","Edition de l'ingrédient \"".$nom."\".") !!}#}
+            <div class="alert alert-success alert-dismissable">               
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Edition de l'ingrédient "{{ d01.nom }}".
+            </div>
+        {% endif %}
+        {# Nouveau = 2#}
+        {% if sw_edit == 2 %}
+            {#{!! HTML::bulle("success","Saisie de l'ingrédient \"".$nom."\".") !!}#}
+            <div class="alert alert-success alert-dismissable">               
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Saisie de l'ingrédient "{{ d01.nom }}".
+            </div>
+        {% endif %}
+    {% endif %}
+    {#<div ng-hide="hide_bulle_erreur" ng-repeat="item_erreur in items_erreur" ng-cloak>
+        {!! HTML::bulle("danger","@{{item_erreur.message}}") !!}
+    </div>
+            <div ng-hide="hide_bulle_erreur" ng-repeat="item_erreur in items_erreur" ng-cloak>
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>               
+                    <i class="fa fa-info-circle"></i>  <strong>Erreur</strong> {{item_erreur.message}}
+                </div>
+            </div>
+    
+    @if($errors->any())
+    @php($message_erreur = "Impossible de valider le formulaire !")
+        @foreach ($errors->all('<br>:message') as $input_error)
+            @php($message_erreur .=  $input_error)
+        @endforeach 
+        {!! HTML::bulle("warning",$message_erreur) !!}
+    @endif#}
+    <!-- END InfoBulle -->
+
+    <!-- Content -->
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Liste des ingrédients</strong></h2>
+        </div>
+        <div>    
+    
+    
+    
+    
+    
 <h3>D01</h3>
 
 <div class="well">
