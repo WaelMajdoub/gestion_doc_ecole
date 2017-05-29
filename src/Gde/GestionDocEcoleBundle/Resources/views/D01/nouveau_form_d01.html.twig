@@ -82,37 +82,38 @@
             <h2><strong>Liste des ingrédients</strong></h2>
         </div>
         <div>    
-            <div class="well">
-                {#{{ form(form) }}#}
-                
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            {#{{ form(form) }}#}
 
-                    {# Les erreurs générales du formulaire. #}
-                    {{ form_errors(form) }}
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
-                    {# Génération manuelle et éclatée : #}
-                    <div class="form-group">
-                        {# Génération du label. #}
-                        {{ form_label(form.nom, "Titre de la période", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                {# Les erreurs générales du formulaire. #}
+                {{ form_errors(form) }}
 
-                        {# Affichage des erreurs pour ce champ précis. #}
-                        {{ form_errors(form.nom) }}
-                        <div class="col-sm-10">
-                          {# Génération de l'input. #}
-                          {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-                        </div>
+                {# Génération manuelle et éclatée : #}
+                <div class="form-group">
+                    {# Génération du label. #}
+                    {{ form_label(form.nom, "Titre de la période", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                    {# Affichage des erreurs pour ce champ précis. #}
+                    {{ form_errors(form.nom) }}
+                    <div class="col-sm-10">
+                      {# Génération de l'input. #}
+                        {{ form_widget(form.nom, {'attr': { 'class': 'form-control', 
+                                                            'placeholder' : 'Saisir une description de la période'}}) }}
                     </div>
-                    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
-                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+                {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+                {{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary bt-pull-right pull-right' }, 
+                                            'label': 'Envoyer'}) }}
+                {# Génération automatique des champs pas encore écrits.
+                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                   et tous les champs cachés (type « hidden »). #}
+                {{ form_rest(form) }}
 
-                    {# Génération automatique des champs pas encore écrits.
-                       Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
-                       et tous les champs cachés (type « hidden »). #}
-                    {{ form_rest(form) }}
-
-                {# Fermeture de la balise <form> du formulaire HTML #}
-                {{ form_end(form) }}
-            </div>
+            {# Fermeture de la balise <form> du formulaire HTML #}
+            {{ form_end(form) }}
+            <br>
+            <br>
         </div>
     </div>
     <!-- END Content -->    
