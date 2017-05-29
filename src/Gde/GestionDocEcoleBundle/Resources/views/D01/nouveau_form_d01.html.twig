@@ -13,13 +13,13 @@
     <div class="content-header">
         <div class="header-section">
             <h1>
-                <i class="fa fa-database"></i>Données </i><br><small>D01Ingredient</small>
+                <i class="fa fa-database"></i>Données </i><br><small>D01Periode</small>
             </h1>
         </div>
     </div>
     <ul class="breadcrumb breadcrumb-top">
         <li><i class="fa fa-database sidebar-nav-icon"></i> Données</li>
-        <li><i class="fa fa-folder-o"></i> D01Ingredient</li>
+        <li><i class="fa fa-folder-o"></i> D01Periode</li>
         {# Affichage = 0 #}
         {% if sw_edit == 0 %}
             <li><a href="admin_table_d01"><i class="fa fa-table"></i></a> <a href="admin_table_d01">Liste</a></li>
@@ -82,15 +82,21 @@
             <h2><strong>Liste des ingrédients</strong></h2>
         </div>
         <div>    
-    
-    
-    
-    
-    
-<h3>D01</h3>
-
-<div class="well">
-  {{ form(form) }}
-</div>
+            <div class="well">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
+    <!-- END Content -->    
 {% endblock %}
-{% block javascripts %}{% endblock %}
+{% block javascripts %}
+<script type="text/javascript"> 
+    'use strict';      
+    var app = angular.module('GestionCuisineBackEnd', []);
+    app.controller('AngularController', function ($scope, $http, $timeout, $interval) 
+    {
+        var vm = this;
+        vm.hide_bulle_erreur = true;
+    });
+</script>
+{% endblock %}
