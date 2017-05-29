@@ -22,7 +22,17 @@ use Gde\GestionDocEcoleBundle\Entity\D80Utilisateur;
 
 class D01Controller extends Controller
 {
-    public function nouveau_form_d01Action(Request $request)
+    private $d01;
+    private $form;
+    /**
+     * @name        set_nouveau_form_d01Action()
+     * @description Cette fonction permet de préparer le formulaire
+     *              Fonction privé pour meilleur lisibilité du code entre les
+     *              fonctions publics get_nouveau_form_d01Action() et
+     *              post_nouveau_form_d01Action()
+     * @return      void
+     */
+    private function set_nouveau_form_d01Action()
     {
         /*
          * Toutes les saisies se font par l'utilisateur s.bressani@bluewin.ch
@@ -31,47 +41,70 @@ class D01Controller extends Controller
                             ->getManager()
                             ->getRepository('GdeGestionDocEcoleBundle:D80Utilisateur');
         $d80 = $repository->findOneBy(array('email' => 's.bressani@bluewin.ch'));
-        
+        /*
+         * Préparation de l'enregistrement D01Periode
+         */
         $d01 = new D01Periode();
         $d01->setId_d80($d80->getId());
+        /*
+         * Création d'un formulaire pour D01Periode
+         */
         $formBuilder = $this->createFormBuilder($d01);
         $formBuilder->add('nom',        TextType::class)
                     ->add('save',       SubmitType::class);
-        $form = $formBuilder->getForm();
-        
-        
+        $form = $formBuilder->setMethod("POST")
+                            ->setAction('nouveau_form_d01_form')->getForm();
+        /*
+         * Set des variables globale private
+         */
+        $this->d01 = $d01;
+        $this->form = $form;
+    }
+    /*
+     * @name        get_nouveau_form_d01Action()
+     * @description GET, Formulaire
+     * @return      void
+     */
+    public function get_nouveau_form_d01Action()
+    {
+        $this->set_nouveau_form_d01Action();
+        return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
+            'sw_edit' => 2,
+            'form' => $this->form->createView(),
+            'success' => 0,
+            'd01' => $this->d01));
+    }
+    /*
+     * @name        post_nouveau_form_d01Action()
+     * @description POST, Formulaire, écriture dans D01Periode
+     * @return      void
+     */
+    public function post_nouveau_form_d01Action(Request $request)
+    {
+        $this->set_nouveau_form_d01Action();
         // Si la requête est en POST
         if ($request->isMethod('POST')) 
         {
             // On fait le lien Requête <-> Formulaire
             // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
-            $form->handleRequest($request);
+            $this->form->handleRequest($request);
 
             // On vérifie que les valeurs entrées sont correctes
             // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-            if ($form->isValid()) 
+            if ($this->form->isValid()) 
             {
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($d01);
+                $em->persist($this->d01);
                 $em->flush();
 
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
                 return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
                     'sw_edit' => 2,
-                    'form' => $form->createView(),
-                    'success' => 'oui',
-                    'd01' => $d01));
-                // Fait un get page?id=...
-                // On redirige vers la page de visualisation de l'annonce nouvellement créée
-                //return $this->redirectToRoute('gde_gestion_doc_ecole_nouveau_form_d01_ok', array('id' => $d01->getId()));
+                    'form' => $this->form->createView(),
+                    'success' => 1,
+                    'd01' => $this->d01));
             }
         }
-        
-        return $this->render('GdeGestionDocEcoleBundle:D01:nouveau_form_d01.html.twig',array(
-            'sw_edit' => 2,
-            'form' => $form->createView(),
-            'success' => 'non',
-            'd01' => $d01));
     }
 }

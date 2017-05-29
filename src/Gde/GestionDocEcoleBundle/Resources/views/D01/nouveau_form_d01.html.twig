@@ -39,7 +39,7 @@
     <!-- END Header -->
     
     <!-- InfoBulle -->
-    {% if success == 'oui' %}
+    {% if success == 1 %}
         {# Affichage = 0 #}
         {% if sw_edit == 0 %}
             {# {!! HTML::bulle("success","Edition de l'ingrédient \"".$nom."\".") !!}#}
@@ -83,7 +83,35 @@
         </div>
         <div>    
             <div class="well">
-                {{ form(form) }}
+                {#{{ form(form) }}#}
+                
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                    {# Les erreurs générales du formulaire. #}
+                    {{ form_errors(form) }}
+
+                    {# Génération manuelle et éclatée : #}
+                    <div class="form-group">
+                        {# Génération du label. #}
+                        {{ form_label(form.nom, "Titre de la période", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+                        {# Affichage des erreurs pour ce champ précis. #}
+                        {{ form_errors(form.nom) }}
+                        <div class="col-sm-10">
+                          {# Génération de l'input. #}
+                          {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+                    {# Génération automatique des champs pas encore écrits.
+                       Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                       et tous les champs cachés (type « hidden »). #}
+                    {{ form_rest(form) }}
+
+                {# Fermeture de la balise <form> du formulaire HTML #}
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -92,7 +120,7 @@
 {% block javascripts %}
 <script type="text/javascript"> 
     'use strict';      
-    var app = angular.module('GestionCuisineBackEnd', []);
+    var app = angular.module('GDEBackEnd', []);
     app.controller('AngularController', function ($scope, $http, $timeout, $interval) 
     {
         var vm = this;
