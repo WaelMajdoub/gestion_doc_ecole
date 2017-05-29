@@ -1,4 +1,4 @@
-.rb linguist-language=php
+.rb linguist-language=Php
 /vendor export-ignore
 /web export-ignore
 /.gitattributes export-ignore
