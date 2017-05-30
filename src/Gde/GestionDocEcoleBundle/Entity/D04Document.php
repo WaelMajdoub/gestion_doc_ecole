@@ -3,6 +3,7 @@
 namespace Gde\GestionDocEcoleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * D04Document
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="d04_document")
  * @ORM\Entity(repositoryClass="Gde\GestionDocEcoleBundle\Repository\D04DocumentRepository")
  */
-class D04Document
+class D04Document implements JsonSerializable
 {
     /**
      * @var int
@@ -24,30 +25,34 @@ class D04Document
     /**
      * @var int
      *
-     * @ORM\Column(name="id_d80", type="integer")
+     * @ORM\ManyToOne(targetEntity="Gde\GestionDocEcoleBundle\Entity\D80Utilisateur")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_d80;
+    private $d80;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="id_d01", type="integer")
+     * @ORM\ManyToOne(targetEntity="Gde\GestionDocEcoleBundle\Entity\D01Periode")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_d01;
+    private $d01;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="id_d02", type="integer")
+     * @ORM\ManyToOne(targetEntity="Gde\GestionDocEcoleBundle\Entity\D02Branche")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_d02;
+    private $d02;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="id_d03", type="integer")
+     * @ORM\ManyToOne(targetEntity="Gde\GestionDocEcoleBundle\Entity\D03Type")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_d03;
+    private $d03;
 
     /**
      * @var \DateTime
@@ -69,7 +74,25 @@ class D04Document
      * @ORM\Column(name="pdf", type="string", length=255)
      */
     private $pdf;
-
+    
+    /**
+     * Tableau pour json
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'd80'=> $this->d80,
+            'd01'=> $this->d01,
+            'd02'=> $this->d02,
+            'd03'=> $this->d03,
+            'date'=> $this->date,
+            'pdf'=> $this->pdf,
+            'texte'=> $this->texte,
+            'search'=> $this->texte,
+        );
+    }
 
     /**
      * Get id
@@ -82,118 +105,99 @@ class D04Document
     }
 
     /**
-     * Set id_d80
+     * Set d80
      *
-     * @param integer $id_dD80
+     * @param integer $d80
      *
      * @return D04Document
      */
-    public function setId_d80($id_d80)
+    public function setD80($d80)
     {
-        $this->id_d80 = $id_d80;
+        $this->d80 = $d80;
 
         return $this;
     }
 
     /**
-     * Get id_d80
+     * Get d80
      *
      * @return int
      */
-    public function getId_d80()
+    public function getD80()
     {
-        return $this->id_d80;
+        return $this->d80;
     }
 
     /**
-     * Set id_d01
+     * Set d01
      *
-     * @param integer $id_d01
+     * @param integer $d01
      *
      * @return D04Document
      */
-    public function setId_d01($id_d01)
+    public function setD01($d01)
     {
-        $this->id_d01 = $id_d01;
-
-        return $this;
-    }
-    
-    public function setIdD01($id_d01)
-    {
-        $this->id_d01 = $id_d01;
+        $this->d01 = $d01;
 
         return $this;
     }
 
     /**
-     * Get id_d01
+     * Get d01
      *
      * @return int
      */
-    public function getIdD01()
+    public function getD01()
     {
-        return $this->id_d01;
+        return $this->d01;
     }
 
     /**
-     * Set id_d02
+     * Set d02
      *
-     * @param integer $id_d02
+     * @param integer $d02
      *
      * @return D04Document
      */
-    public function setId_d02($id_d02)
+    public function setD02($d02)
     {
-        $this->id_d02 = $id_d02;
-
-        return $this;
-    }
-        public function setIdD02($id_d02)
-    {
-        $this->id_d02 = $id_d02;
+        $this->d02 = $d02;
 
         return $this;
     }
 
     /**
-     * Get id_d02
+     * Get d02
      *
      * @return int
      */
-    public function getIdD02()
+    public function getD02()
     {
-        return $this->id_d02;
+        return $this->d02;
     }
 
     /**
-     * Set id_d03
+     * Set d03
      *
-     * @param integer $id_d03
+     * @param integer $d03
      *
      * @return D04Document
      */
-    public function setId_d03($id_d03)
+    public function setD03($d03)
     {
-        $this->id_d03 = $id_d03;
-
-        return $this;
-    }
-    public function setIdD03($id_d03)
-    {
-        $this->id_d03 = $id_d03;
+        $this->d03 = $d03;
 
         return $this;
     }
     
     /**
-     * Get id_d03
+     * Get d03
      *
      * @return int
      */
-    public function getIdD03()
+    public function getD03()
     {
-        return $this->id_d03;
+        return $this->d03;
     }
 
     /**

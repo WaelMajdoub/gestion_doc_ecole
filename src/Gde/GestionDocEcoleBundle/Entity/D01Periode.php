@@ -24,10 +24,11 @@ class D01Periode
     
     /**
      * @var int
-     *
-     * @ORM\Column(name="id_d80", type="integer")
+     * 
+     * @ORM\ManyToOne(targetEntity="Gde\GestionDocEcoleBundle\Entity\D80Utilisateur")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $id_d80;
+    private $d80;
 
     /**
      * @var string
@@ -48,27 +49,27 @@ class D01Periode
     }
     
     /**
-     * Set id_d80
+     * Set d80
      *
-     * @param int $id_d80
+     * param int $d80
      *
      * @return D01Periode
      */
-    public function setId_d80($id_d80)
+    public function setD80($d80)
     {
-        $this->id_d80 = $id_d80;
+        $this->d80 = $d80;
 
         return $this;
     }
 
     /**
-     * Get id_d80
+     * Get d80
      *
      * @return int
      */
-    public function getId_d80()
+    public function getD80()
     {
-        return $this->id_d80;
+        return $this->d80;
     }
 
     /**

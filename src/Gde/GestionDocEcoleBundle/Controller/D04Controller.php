@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Gde\GestionDocEcoleBundle\ClasseDivers\SortArrayClasseDivers;
 
+use JMS\Serializer\SerializerBuilder;
 
 class D04Controller extends Controller
 {
@@ -44,7 +45,7 @@ class D04Controller extends Controller
          * Préparation de l'enregistrement D04Document
          */
         $d04 = new D04Document();
-        $d04->setId_d80($d80->getId());
+        $d04->setD80($d80);
         /*
          * Création d'un formulaire pour D04Document
          */
@@ -109,10 +110,14 @@ class D04Controller extends Controller
     {
         // Chargement de l'entité
         $em = $this->get('doctrine')->getManager();
-        $users = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();
+        $table = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();
         // Serialisation de l'entité vers Json
+        /* ANCIENE METHODE
         $serializer = $this->get('jms_serializer');
-        $response = $serializer->serialize($users,'json');
+         */
+        /* NOUVELLE METHODE */
+        $serializer = SerializerBuilder::create()->build();
+        $response = $serializer->serialize($table,'json');
         // Passage du json en array php pure pour utiliser la classe 
         // SortArrayClasseDivers
         $var = json_decode($response, true);
@@ -163,17 +168,21 @@ class D04Controller extends Controller
          * Chargement de l'entité avec la methode find sur la clé principale
          */
         $em = $this->getDoctrine()->getEntityManager();
-        $users = $em->getRepository('GdeGestionDocEcoleBundle:D04Document')->find($id);
-        if (!$users) {
+        $table = $em->getRepository('GdeGestionDocEcoleBundle:D04Document')->find($id);
+        if (!$table) {
             throw $this->createNotFoundException('No guest found for id '.$id);
         }
-        $em->remove($users);
+        $em->remove($table);
         $em->flush();
         /*
          * Serialisation de l'entité vers Json
          */
+        /* ANCIENE METHODE
         $serializer = $this->get('jms_serializer');
-        $response = $serializer->serialize($users,'json');
+         */
+        /* NOUVELLE METHODE */
+        $serializer = SerializerBuilder::create()->build();
+        $response = $serializer->serialize($table,'json');
         /*
          *  Passage du json en array php
          */

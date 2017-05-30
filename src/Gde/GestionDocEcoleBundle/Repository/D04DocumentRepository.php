@@ -10,4 +10,12 @@ namespace Gde\GestionDocEcoleBundle\Repository;
  */
 class D04DocumentRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllJointureD01D02D03()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM GdeGestionDocEcoleBundle:D04Document p ORDER BY p.id ASC'
+            )
+            ->getResult();
+    }
 }
