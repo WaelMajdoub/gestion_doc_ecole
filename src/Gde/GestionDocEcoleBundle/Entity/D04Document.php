@@ -118,13 +118,20 @@ class D04Document
 
         return $this;
     }
+    
+    public function setIdD01($id_d01)
+    {
+        $this->id_d01 = $id_d01;
+
+        return $this;
+    }
 
     /**
      * Get id_d01
      *
      * @return int
      */
-    public function getId_d01()
+    public function getIdD01()
     {
         return $this->id_d01;
     }
@@ -142,13 +149,19 @@ class D04Document
 
         return $this;
     }
+        public function setIdD02($id_d02)
+    {
+        $this->id_d02 = $id_d02;
+
+        return $this;
+    }
 
     /**
      * Get id_d02
      *
      * @return int
      */
-    public function getId_d02()
+    public function getIdD02()
     {
         return $this->id_d02;
     }
@@ -166,13 +179,19 @@ class D04Document
 
         return $this;
     }
+    public function setIdD03($id_d03)
+    {
+        $this->id_d03 = $id_d03;
 
+        return $this;
+    }
+    
     /**
      * Get id_d03
      *
      * @return int
      */
-    public function getId_d03()
+    public function getIdD03()
     {
         return $this->id_d03;
     }

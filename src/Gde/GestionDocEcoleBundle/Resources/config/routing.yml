@@ -40,3 +40,15 @@ gde_gestion_doc_ecole_table_d03_json:
 gde_gestion_doc_ecole_delete_row_d03_json:
     path:       /delete_row_d03_{id}.json
     defaults:   { _controller: GdeGestionDocEcoleBundle:D03:delete_row_d03_json }
+gde_gestion_doc_ecole_nouveau_form_d04:
+    path:       /nouveau_form_d04
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:nouveau_form_d04 }
+gde_gestion_doc_ecole_table_d04:
+    path:       /table_d04
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:table_d04 }
+gde_gestion_doc_ecole_table_d04_json:
+    path:       /table_d04_{sort}_{sens}.json
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:table_d04_json }
+gde_gestion_doc_ecole_delete_row_d04_json:
+    path:       /delete_row_d04_{id}.json
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:delete_row_d03_json }
