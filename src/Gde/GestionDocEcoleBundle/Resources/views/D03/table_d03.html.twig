@@ -122,8 +122,7 @@
             if (!$scope.query)
                 return true; 
             var search = removeAccents($scope.query.toLowerCase());
-            var search_in_json = param.nom.toLowerCase()
-            var item_list = removeAccents(search_in_json);
+            var item_list = removeAccents(param.search.toLowerCase());
             return item_list.indexOf(search) > -1;
         };
         $scope.items_delete = [];

@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use Gde\GestionDocEcoleBundle\ClasseDivers\SortArrayClasseDivers;
+use Gde\GestionDocEcoleBundle\ClasseDivers\PrepareArrayChoiseTypeSimpleClasseDivers;
 
 use JMS\Serializer\SerializerBuilder;
 
@@ -47,16 +49,41 @@ class D04Controller extends Controller
         $d04 = new D04Document();
         $d04->setD80($d80);
         /*
+         * Préparation du tableau de ChoiceType
+         */
+        $em = $this->getDoctrine()->getEntityManager();
+        // TypeChoices pour D01Periode
+        $table = $em->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
+        $array_ct_d01 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
+        // TypeChoices pour D02Branche
+        $table = $em->getRepository('GdeGestionDocEcoleBundle:D02Branche')->findAll();
+        $array_ct_d02 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
+        // TypeChoices pour D03Type
+        $table = $em->getRepository('GdeGestionDocEcoleBundle:D03Type')->findAll();
+        $array_ct_d03 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
+        /*
          * Création d'un formulaire pour D04Document
          */
         $formBuilder = $this->createFormBuilder($d04);
-        $formBuilder->add('d01',         IntegerType::class)
-                    ->add('d02',         IntegerType::class)
-                    ->add('d03',         IntegerType::class)
-                    ->add('date',           DateType::class)
-                    ->add('texte',          TextType::class)
-                    ->add('pdf',            TextType::class)
-                    ->add('save',           SubmitType::class);
+        $formBuilder->add('d01',    ChoiceType::class,array('label' => 'select some colors',
+                                                'multiple' => false,
+                                                'choices' => $array_ct_d01->getArray(),
+                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
+                                                'data'=> 1))
+                    ->add('d02',    ChoiceType::class,array('label' => 'select some colors',
+                                                'multiple' => false,
+                                                'choices' => $array_ct_d02->getArray(),
+                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
+                                                'data'=> 1))
+                    ->add('d03',    ChoiceType::class,array('label' => 'select some colors',
+                                                'multiple' => false,
+                                                'choices' => $array_ct_d03->getArray(),
+                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
+                                                'data'=> 1))
+                    ->add('date',   DateType::class)
+                    ->add('texte',  TextType::class)
+                    ->add('pdf',    TextType::class)
+                    ->add('save',   SubmitType::class);
         $form = $formBuilder->setMethod("POST")
                             ->setAction('nouveau_form_d04')->getForm();
         // Si la requête est en POST
@@ -112,21 +139,9 @@ class D04Controller extends Controller
         $em = $this->get('doctrine')->getManager();
         $table = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();
         // Serialisation de l'entité vers Json
-        /* ANCIENE METHODE
-        $serializer = $this->get('jms_serializer');
-         */
-        /* NOUVELLE METHODE 
-        $serializer = SerializerBuilder::create()->build();
-        $response = $serializer->serialize($table,'json');
-        */
-        /* METHODE Par serialisation dans l'entité */
         $json = json_encode($table);
-        $array['data'] = json_decode($json, true);
-        
         // Passage du json en array php pure pour utiliser la classe 
-        // SortArrayClasseDivers
-        //$var = json_decode($response, true);
-        //$array['data'] = $var;
+        $array['data'] = json_decode($json, true);
         switch ($sort)
         {
             case 'id':

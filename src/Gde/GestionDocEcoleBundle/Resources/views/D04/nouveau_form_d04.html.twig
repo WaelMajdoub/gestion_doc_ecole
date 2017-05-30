@@ -92,7 +92,7 @@
                 {# d01 #}
                 <div class="form-group">
                     {# Génération du label. #}
-                    {{ form_label(form.d01, "N° id D01Periode", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                    {{ form_label(form.d01, "Periode", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
                     {# Affichage des erreurs pour ce champ précis. #}
                     {{ form_errors(form.d01) }}
@@ -102,11 +102,12 @@
                                                             'placeholder' : 'Saisir le n° id D01Periode'}}) }}
                     </div>
                 </div>
+
                     
                 {# d02 #}
                 <div class="form-group">
                     {# Génération du label. #}
-                    {{ form_label(form.d02, "N° id D02Branche", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                    {{ form_label(form.d02, "Branche", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
                     {# Affichage des erreurs pour ce champ précis. #}
                     {{ form_errors(form.d02) }}
@@ -120,7 +121,7 @@
                 {# d03 #}
                 <div class="form-group">
                     {# Génération du label. #}
-                    {{ form_label(form.d03, "N° id D03Type", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                    {{ form_label(form.d03, "Type", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
                     {# Affichage des erreurs pour ce champ précis. #}
                     {{ form_errors(form.d03) }}
@@ -198,4 +199,5 @@
         vm.hide_bulle_erreur = true;
     });
 </script>
+<script type="text/javascript" src="js/removeAccent.js"></script>
 {% endblock %}

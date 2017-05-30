@@ -36,9 +36,13 @@
         <!-- The themes stylesheet of this template (for using specific theme color in individual elements - must included last) -->
         <link rel="stylesheet" href="{{asset('css/themes/flatie.css')}}">
         <!-- Ui-Select -->
+        {#
         <link rel="stylesheet" href="{{asset('node_modules/ui-select/select.css')}}">
         <link rel="stylesheet" href="{{asset('node_modules/select2/dist/css/select2.css')}}">
-        <link rel="stylesheet" href="{{asset('node_modules/selectize.js/dist/css/selectize.default.css')}}">
+        <link rel="stylesheet" href="{{asset('node_modules/selectize.js/dist/css/selectize.default.css')}}">#}
+        <link rel="stylesheet" href="http://stephane-bressani.ch/cuisine/public/css/select.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css">    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.8.5/css/selectize.default.css">
         
         {% block stylesheets %}{% endblock %}
         <!-- END Stylesheets --> 
@@ -51,7 +55,7 @@
         <script src="{{asset('node_modules/angular-route/angular-route.min.js')}}"></script>  
         
         <!-- Ui-Select -->
-        <script src="{{asset('node_modules/ui-select/select.js')}}"></script>
+        <script src="{{asset('node_modules/ui-select/dist/select.js')}}"></script>
         
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -360,8 +364,11 @@
         <!-- END User Settings -->
         
         <!-- jQuery, Bootstrap.js, jQuery plugins and Custom JS code -->
+        {#
         <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
-        <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('node_modules/bootstrap/dist/js/bootstrap.min.js') }}"></script>#}
+        <script src="http://stephane-bressani.ch/cuisine/public/js/vendor/jquery.min.js"></script>
+        <script src="http://stephane-bressani.ch/cuisine/public/js/vendor/bootstrap.min.js"></script>
         <script src="{{ asset('js/plugins.js') }}"></script>
         <!-- Scripts Laravel -->
         <script src="{{ asset('js/app.js') }}"></script>

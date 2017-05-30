@@ -4,6 +4,7 @@ namespace Gde\GestionDocEcoleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JsonSerializable;
 
 /**
  * D01Periode
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="d01_periode")
  * @ORM\Entity(repositoryClass="Gde\GestionDocEcoleBundle\Repository\D01PeriodeRepository")
  */
-class D01Periode
+class D01Periode implements JsonSerializable
 {
     /**
      * @var int
@@ -38,6 +39,19 @@ class D01Periode
      */
     private $nom;
 
+    /**
+     * Tableau pour json
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'nom'=> $this->nom,
+            'search'=> $this->nom,
+        );
+    }
+    
     /**
      * Get id
      *

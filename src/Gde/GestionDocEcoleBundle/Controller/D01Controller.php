@@ -110,17 +110,9 @@ class D01Controller extends Controller
         $em = $this->get('doctrine')->getManager();
         $table = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
         // Serialisation de l'entité vers Json
-        /* ANCIENE METHODE
-        $serializer = $this->get('jms_serializer');
-         */
-        /* NOUVELLE METHODE */
-        $serializer = SerializerBuilder::create()->build();
-        // json vers array
-        $response = $serializer->serialize($table, 'json');
+        $json = json_encode($table);
         // Passage du json en array php pure pour utiliser la classe 
-        // SortArrayClasseDivers
-        $var = json_decode($response, true);
-        $array['data'] = $var;
+        $array['data'] = json_decode($json, true);
         switch ($sort)
         {
             case 'id':

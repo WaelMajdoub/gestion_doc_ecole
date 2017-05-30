@@ -3,6 +3,7 @@
 namespace Gde\GestionDocEcoleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * D03Type
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="d03_type")
  * @ORM\Entity(repositoryClass="Gde\GestionDocEcoleBundle\Repository\D03TypeRepository")
  */
-class D03Type
+class D03Type implements JsonSerializable
 {
     /**
      * @var int
@@ -36,7 +37,19 @@ class D03Type
      */
     private $nom;
 
-
+    /**
+     * Tableau pour json
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'nom'=> $this->nom,
+            'search'=> $this->nom,
+        );
+    }
+    
     /**
      * Get id
      *
