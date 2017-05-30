@@ -1,5 +1,5 @@
 {% extends 'GdeGestionDocEcoleBundle::/template.html.twig' %}
-{% block title %}D02{% endblock %}
+{% block title %}D03{% endblock %}
 {% block stylesheets %}{% endblock %}
 {% block search %}
 <div class="form-group">
@@ -13,26 +13,26 @@
     <div class="content-header">
         <div class="header-section">
             <h1>
-                <i class="fa fa-database"></i>Données </i><br><small>D02Branche</small>
+                <i class="fa fa-database"></i>Données </i><br><small>D03Type</small>
             </h1>
         </div>
     </div>
     <ul class="breadcrumb breadcrumb-top">
         <li><i class="fa fa-database sidebar-nav-icon"></i> Données</li>
-        <li><i class="fa fa-folder-o"></i> D02Branche</li>
+        <li><i class="fa fa-folder-o"></i> D03Type</li>
         {# Affichage = 0 #}
         {% if sw_edit == 0 %}
-            <li><a href="table_d02"><i class="fa fa-table"></i></a> <a href="table_d02">Liste</a></li>
+            <li><a href="table_d03"><i class="fa fa-table"></i></a> <a href="table_d03">Liste</a></li>
             <li><i class="fa fa-edit"></i> Affichage</li>
         {% endif %}
         {# Edition = 1 #}
         {% if sw_edit == 1 %}
-            <li><a href="table_d02"><i class="fa fa-table"></i></a> <a href="table_d02">Liste</a></li>
+            <li><a href="table_d03"><i class="fa fa-table"></i></a> <a href="table_d03">Liste</a></li>
             <li><i class="fa fa-edit"></i> Édition</li>
         {% endif %}
         {# Nouveau = 2#}
         {% if sw_edit == 2 %}
-            <li><a href="table_d02"><i class="fa fa-table"></i></a> <a href="table_d02">Liste</a></li>
+            <li><a href="table_d03"><i class="fa fa-table"></i></a> <a href="table_d03">Liste</a></li>
             <li><i class="fa fa-edit"></i> Nouvelle saisie</li>
         {% endif %}
     </ul>
@@ -45,7 +45,7 @@
             {# {!! HTML::bulle("success","Edition de l'ingrédient \"".$nom."\".") !!}#}
             <div class="alert alert-success alert-dismissable">               
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Edition de la branche "{{ d02.nom }}".
+                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Edition du type "{{ d03.nom }}".
             </div>
         {% endif %}
         {# Nouveau = 2#}
@@ -53,7 +53,7 @@
             {#{!! HTML::bulle("success","Saisie de l'ingrédient \"".$nom."\".") !!}#}
             <div class="alert alert-success alert-dismissable">               
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Saisie de la branche "{{ d02.nom }}".
+                <i class="fa fa-info-circle"></i> <strong>Opération terminé avec succès</strong> Saisie du type "{{ d03.nom }}".
             </div>
         {% endif %}
     {% endif %}
@@ -92,14 +92,14 @@
                 {# Génération manuelle et éclatée : #}
                 <div class="form-group">
                     {# Génération du label. #}
-                    {{ form_label(form.nom, "Titre de la branche", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                    {{ form_label(form.nom, "Titre du type", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
                     {# Affichage des erreurs pour ce champ précis. #}
                     {{ form_errors(form.nom) }}
                     <div class="col-sm-10">
                       {# Génération de l'input. #}
                         {{ form_widget(form.nom, {'attr': { 'class': 'form-control', 
-                                                            'placeholder' : 'Saisir une la branche'}}) }}
+                                                            'placeholder' : 'Saisir le type'}}) }}
                     </div>
                 </div>
                 {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
