@@ -73,8 +73,8 @@
                         <td ng-bind="item.id" class="text-right" style="width: 10%;"></td>
                         <td ng-bind="item.nom" style="width: 70%;"></td>
                         <td style="width: 20%;">
-                            <center><a href="{{item.voir}}" data-toggle="tooltip" title="Voir"  class="btn btn-xs btn-default"><i class="fa fa-expeditedssl"> Voir</i></a>
-                            &nbsp;<a href="{{item.editer}}" data-toggle="tooltip" title="Éditer" class="btn btn-xs btn-default"><i class="fa fa-pencil"> Éditer</i></a>
+                            <center><a href="#{{item.id}}" data-toggle="tooltip" title="Voir"  class="btn btn-xs btn-default"><i class="fa fa-expeditedssl"> Voir</i></a>
+                            &nbsp;<a href="#{{item.id}}" data-toggle="tooltip" title="Éditer" class="btn btn-xs btn-default"><i class="fa fa-pencil"> Éditer</i></a>
                             &nbsp;<a href="javascript:void(0)" ng-click="delete_row(item.id,'d01')" data-toggle="tooltip" title="Effacer" class="btn btn-xs btn-danger"><i class="fa fa-times"></i> Effacer</a>
                             </center> 
                         </td>

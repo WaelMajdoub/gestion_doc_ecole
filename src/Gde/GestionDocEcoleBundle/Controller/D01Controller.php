@@ -98,8 +98,8 @@ class D01Controller extends Controller
     }
     /**
      * @name    table_d01_jsonAction()
-     * @parm    $sort
-     * @parm    $sens
+     * @param   $sort
+     * @param   $sens
      * @return  json
      */
     public function table_d01_jsonAction($sort,$sens)
