@@ -51,7 +51,7 @@ class D04Controller extends Controller
         /*
          * Préparation du tableau de ChoiceType
          */
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         // TypeChoices pour D01Periode
         $table = $em->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
         $array_ct_d01 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
@@ -80,7 +80,14 @@ class D04Controller extends Controller
                                                 'choices' => $array_ct_d03->getArray(),
                                                 'attr'=>array('style'=>'', 'customattr'=>'customdata'),
                                                 'data'=> 1))
-                    ->add('date',   DateType::class)
+                    //->add('date',   DateType::class)
+                    ->add('date', DateType::class, array(
+                                                'widget' => 'single_text',
+                                                // do not render as type="date", to avoid HTML5 date pickers
+                                                'html5' => false,
+                                                // add a class that can be selected in JavaScript
+                                                'attr' => ['class' => 'datepicker'],
+                    ))
                     ->add('texte',  TextType::class)
                     ->add('pdf',    TextType::class)
                     ->add('save',   SubmitType::class);
