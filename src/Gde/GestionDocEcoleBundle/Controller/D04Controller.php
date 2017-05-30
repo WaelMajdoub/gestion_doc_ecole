@@ -115,26 +115,31 @@ class D04Controller extends Controller
         /* ANCIENE METHODE
         $serializer = $this->get('jms_serializer');
          */
-        /* NOUVELLE METHODE */
+        /* NOUVELLE METHODE 
         $serializer = SerializerBuilder::create()->build();
         $response = $serializer->serialize($table,'json');
+        */
+        /* METHODE Par serialisation dans l'entité */
+        $json = json_encode($table);
+        $array['data'] = json_decode($json, true);
+        
         // Passage du json en array php pure pour utiliser la classe 
         // SortArrayClasseDivers
-        $var = json_decode($response, true);
-        $array['data'] = $var;
+        //$var = json_decode($response, true);
+        //$array['data'] = $var;
         switch ($sort)
         {
             case 'id':
                 $sort_array = new SortArrayClasseDivers($array,'id');
                 break;
-            case 'id_d01':
-                $sort_array = new SortArrayClasseDivers($array,'id_d01');
+            case 'd01':
+                $sort_array = new SortArrayClasseDivers($array,'d01');
                 break;
-            case 'id_d02':
-                $sort_array = new SortArrayClasseDivers($array,'id_d02');
+            case 'd02':
+                $sort_array = new SortArrayClasseDivers($array,'d02');
                 break;
-            case 'id_d03':
-                $sort_array = new SortArrayClasseDivers($array,'id_d03');
+            case 'd03':
+                $sort_array = new SortArrayClasseDivers($array,'d03');
                 break;
             case 'date':
                 $sort_array = new SortArrayClasseDivers($array,'date');

@@ -145,6 +145,7 @@ class DefaultController extends Controller
                             "D04Document");
         $var = "";
         $var2 = "";
+        $var3 = "";
         $cr = "\n";
         for($i = 0;$i < count($DB_Table); $i++)
         {
@@ -173,11 +174,18 @@ class DefaultController extends Controller
             // json vers array
             $table_array = json_decode($serializer->serialize($table, 'json'), true);
             
-           
+            for($j = 0;$j < count($table_array); $j++)
+            {
+                foreach ($table_array[$j] as $k => $v) 
+                {
+                    $var2 .= $k.$cr;
+                }
+            }
             
-
-            /*
-            $json = json_encode($d04);
+            // 3
+            
+            $json = json_encode($table);
+            $var3_array = json_decode($json, true);
 
             /*$json = json_encode(
                         array(  $d04->pdf, 
@@ -194,9 +202,9 @@ class DefaultController extends Controller
             */
             for($j = 0;$j < count($table_array); $j++)
             {
-                foreach ($table_array[$j] as $k => $v) 
+                foreach ($var3_array[$j] as $k => $v) 
                 {
-                    $var2 .= $k.$cr;
+                    $var3 .= $k.$cr;
                 }
             }
 
@@ -209,6 +217,8 @@ class DefaultController extends Controller
             'var' => $var,
             'd04' => $table_array,
             'var2' => $var2,
+            'a3' => $var3_array,
+            'v3' => $var3,
         ]);
     }
     

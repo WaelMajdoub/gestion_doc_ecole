@@ -83,14 +83,17 @@ class D04Document implements JsonSerializable
     {
         return array(
             'id' => $this->id,
-            'd80'=> $this->d80,
-            'd01'=> $this->d01,
-            'd02'=> $this->d02,
-            'd03'=> $this->d03,
-            'date'=> $this->date,
+            //'d80'=> $this->d80->getId(),
+            'd01'=> $this->d01->getNom(),
+            'd02'=> $this->d02->getNom(),
+            'd03'=> $this->d03->getNom(),
+            'date'=> $this->date->format('d-m-Y'),
             'pdf'=> $this->pdf,
             'texte'=> $this->texte,
-            'search'=> $this->texte,
+            'search'=> $this->d01->getNom().' '
+                        .$this->d02->getNom().' '
+                        .$this->d03->getNom().' '
+                        .$this->texte,
         );
     }
 
