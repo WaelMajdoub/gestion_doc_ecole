@@ -90,7 +90,7 @@ class D01Controller extends Controller
     }
     /**
      * @name        table_d01Action()
-     * @return      void
+     * @return      twig
      */
     public function table_d01Action()
     {
@@ -98,7 +98,9 @@ class D01Controller extends Controller
     }
     /**
      * @name    table_d01_jsonAction()
-     * @return  void
+     * @parm    $sort
+     * @parm    $sens
+     * @return  json
      */
     public function table_d01_jsonAction($sort,$sens)
     {
@@ -131,5 +133,39 @@ class D01Controller extends Controller
         $response = json_encode($array);
         return new Response($response);
         //return $this->render('GdeGestionDocEcoleBundle:Debug:vardump.html.twig',array('var' => $array));
+    }
+    /**
+     * @name    delete_row_d01_jsonAction()
+     * @param   $id
+     * @return json
+     */
+    public function delete_row_d01_jsonAction($id)
+    {
+        /*
+         * Chargement de l'entité avec la methode find sur la clé principale
+         */
+        $em = $this->getDoctrine()->getEntityManager();
+        $users = $em->getRepository('GdeGestionDocEcoleBundle:D01Periode')->find($id);
+        if (!$users) {
+            throw $this->createNotFoundException('No guest found for id '.$id);
+        }
+        $em->remove($users);
+        $em->flush();
+        /*
+         * Serialisation de l'entité vers Json
+         */
+        $serializer = $this->get('jms_serializer');
+        $response = $serializer->serialize($users,'json');
+        /*
+         *  Passage du json en array php
+         */
+        $var = json_decode($response, true);
+        $var['id'] = $id;
+        $array['data'] = $var;
+        /*
+         * Reponse en json
+         */
+        $response = json_encode($array);
+        return new Response($response);
     }
 }

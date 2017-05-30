@@ -13,3 +13,6 @@ gde_gestion_doc_ecole_table_d01:
 gde_gestion_doc_ecole_table_d01_json:
     path:       /table_d01_{sort}_{sens}.json
     defaults:   { _controller: GdeGestionDocEcoleBundle:D01:table_d01_json }
+gde_gestion_doc_ecole_delete_row_d01_json:
+    path:       /delete_row_d01_{id}.json
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D01:delete_row_d01_json }
