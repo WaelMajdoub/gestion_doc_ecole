@@ -50,9 +50,9 @@ class D04Controller extends Controller
          * Création d'un formulaire pour D04Document
          */
         $formBuilder = $this->createFormBuilder($d04);
-        $formBuilder->add('id_d01',         IntegerType::class)
-                    ->add('id_d02',         IntegerType::class)
-                    ->add('id_d03',         IntegerType::class)
+        $formBuilder->add('d01',         IntegerType::class)
+                    ->add('d02',         IntegerType::class)
+                    ->add('d03',         IntegerType::class)
                     ->add('date',           DateType::class)
                     ->add('texte',          TextType::class)
                     ->add('pdf',            TextType::class)
