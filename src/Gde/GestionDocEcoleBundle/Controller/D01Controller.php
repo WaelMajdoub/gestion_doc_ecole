@@ -100,58 +100,35 @@ class D01Controller extends Controller
      * @name    table_d01_jsonAction()
      * @return  void
      */
-    public function table_d01_jsonAction()
+    public function table_d01_jsonAction($sort,$sens)
     {
-        /*
-        $serializedEntity = $this->container->get('serializer')->serialize($entity, 'json');
-        return new Response($serializedEntity);
-         * */
-        
+        // Chargement de l'entité
         $em = $this->get('doctrine')->getManager();
         $users = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
-
+        // Serialisation de l'entité vers Json
         $serializer = $this->get('jms_serializer');
         $response = $serializer->serialize($users,'json');
-        
-        
-        
+        // Passage du json en array php pure pour utiliser la classe 
+        // SortArrayClasseDivers
         $var = json_decode($response, true);
-        
-        
         $array['data'] = $var;
-        $sort_array = new SortArrayClasseDivers($array,'nom');
-        $array = $sort_array->getSortAscStr();
-        
-        $response = json_encode($array);
-        //var_dump($array);*/
-        
-        
-        
-        
-        
-        
-        
-        /*$array['data'] = $data;
-        // Tri de ce que je n'ai pas pu trier par la requête sql
         switch ($sort)
         {
-            case 'nomgenere':
-                $sort_array = new SortArrayClasseAutreQueStructure($array,'nom_genere');
-                if($sens == 'asc')
-                    $array = $sort_array->getSortAscStr();
-                else
-                    $array = $sort_array->getSortDescStr();
+            case 'id':
+                $sort_array = new SortArrayClasseDivers($array,'id');
                 break;
-            case 'nomgenerepluriel':
-                $sort_array = new SortArrayClasseAutreQueStructure($array,'nom_genere_pluriel');
-                if($sens == 'asc')
-                    $array = $sort_array->getSortAscStr();
-                else
-                    $array = $sort_array->getSortDescStr();
+            case 'nom':
+                $sort_array = new SortArrayClasseDivers($array,'nom');
                 break;
-        }*/
-        
-        
+            default:
+                $sort_array = new SortArrayClasseDivers($array,'id');
+                break; 
+        }
+        if($sens == 'asc')
+            $array = $sort_array->getSortAscStr();
+        else
+            $array = $sort_array->getSortDescStr();
+        $response = json_encode($array);
         return new Response($response);
         //return $this->render('GdeGestionDocEcoleBundle:Debug:vardump.html.twig',array('var' => $array));
     }

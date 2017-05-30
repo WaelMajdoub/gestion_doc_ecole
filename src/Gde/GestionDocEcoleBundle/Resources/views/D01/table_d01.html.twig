@@ -3,7 +3,7 @@
 {% block stylesheets %}{% endblock %}
 {% block search %}
 <div class="form-group">
-    <input ng-model="query" id="top-search" class="form-control" placeholder="Rechercher..." disabled="false" type="text">
+    <input ng-model="query" id="top-search" class="form-control ng-pristine ng-valid ng-empty ng-touched" placeholder="Rechercher..." type="text">
 </div>
 {% endblock %}
 {% block body %}
@@ -52,16 +52,17 @@
                 <thead>
                     <tr>
                         <th ng-if="italic_d01 == 'id'">
-                            <i>Id</i>
+                            <i>Id</i>&nbsp;<a href="javascript:void(0)" ng-click="refresh_table('d01','id','asc',1)" class="alert-link"><img src="{{asset('img/asc.png')}}" alt="Tri ascendant" data-toggle="tooltip" title="" data-original-title="Tri ascendant"></a> <a href="javascript:void(0)" ng-click="refresh_table('d01','id','desc',1)" class="alert-link"><img src="{{asset('img/desc.png')}}" alt="" tri="" descendant"="" data-toggle="tooltip" title="" data-original-title="Tri descendant"></a>
+                        </th>  
                         </th>
                         <th ng-if="italic_d01 != 'id'">
-                            Id
+                            Id&nbsp;<a href="javascript:void(0)" ng-click="refresh_table('d01','id','asc',1)" class="alert-link"><img src="{{asset('img/asc.png')}}" alt="Tri ascendant" data-toggle="tooltip" title="" data-original-title="Tri ascendant"></a> <a href="javascript:void(0)" ng-click="refresh_table('d01','id','desc',1)" class="alert-link"><img src="{{asset('img/desc.png')}}" alt="" tri="" descendant"="" data-toggle="tooltip" title="" data-original-title="Tri descendant"></a>
                         </th>
                         <th ng-if="italic_d01 == 'nom'">                                   
-                            <i>Nom</i>
+                            <i>Nom</i>&nbsp;<a href="javascript:void(0)" ng-click="refresh_table('d01','nom','asc',1)" class="alert-link"><img src="{{asset('img/asc.png')}}" alt="Tri ascendant" data-toggle="tooltip" title="" data-original-title="Tri ascendant"></a> <a href="javascript:void(0)" ng-click="refresh_table('d01','nom','desc',1)" class="alert-link"><img src="{{asset('img/desc.png')}}" alt="" tri="" descendant"="" data-toggle="tooltip" title="" data-original-title="Tri descendant"></a>
                         </th>
                         <th ng-if="italic_d01 != 'nom'">                                     
-                            Nom
+                            Nom&nbsp;<a href="javascript:void(0)" ng-click="refresh_table('d01','nom','asc',1)" class="alert-link"><img src="{{asset('img/asc.png')}}" alt="Tri ascendant" data-toggle="tooltip" title="" data-original-title="Tri ascendant"></a> <a href="javascript:void(0)" ng-click="refresh_table('d01','nom','desc',1)" class="alert-link"><img src="{{asset('img/desc.png')}}" alt="" tri="" descendant"="" data-toggle="tooltip" title="" data-original-title="Tri descendant"></a>
                         </th>
                         <th class="text-center">Opération</th>
                     </tr>
@@ -121,7 +122,8 @@
             if (!$scope.query)
                 return true; 
             var search = removeAccents($scope.query.toLowerCase());
-            var item_list = removeAccents(param.search.toLowerCase());
+            var search_in_json = param.nom.toLowerCase()
+            var item_list = removeAccents(search_in_json);
             return item_list.indexOf(search) > -1;
         };
         $scope.items_delete = [];
@@ -176,8 +178,6 @@
                             break;
                     }
                     var url = 'table_'+$scope.table+'_'+$scope.sort+'_'+$scope.sens+'.json';
-                    url = '{{asset('json.json')}}';
-                    url = 'table_d01.json';
                     $http.get(url)
                     
                     /*$http({
