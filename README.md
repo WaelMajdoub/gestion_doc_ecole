@@ -1,5 +1,4 @@
-http://217.182.205.160/gde/app_dev.php/table_d01<br>
-http://217.182.205.160/gde/app_dev.php/nouveau_form_d01<br>
+http://217.182.205.160/gde/app_dev.php/table_d04<br>
 http://217.182.205.160/gde/app_dev.php/dbseed<br>
 
 Symfony Standard Edition
