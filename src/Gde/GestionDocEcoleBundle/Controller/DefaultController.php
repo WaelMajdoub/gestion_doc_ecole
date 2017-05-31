@@ -102,7 +102,7 @@ class DefaultController extends Controller
                                 $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(date_create(\''.$v.'\'));'.$cr;
                             }
                             elseif (is_string($v))
-                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(\''.$v.'\');'.$cr;
+                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(\''.addslashes ($v).'\');'.$cr;
                             else
                                 $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'('.$v.');'.$cr;
                         }
