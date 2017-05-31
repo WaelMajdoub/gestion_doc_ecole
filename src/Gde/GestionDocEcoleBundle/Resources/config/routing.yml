@@ -54,4 +54,4 @@ gde_gestion_doc_ecole_table_d04_json:
     defaults:   { _controller: GdeGestionDocEcoleBundle:D04:table_d04_json }
 gde_gestion_doc_ecole_delete_row_d04_json:
     path:       /delete_row_d04_{id}.json
-    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:delete_row_d03_json }
+    defaults:   { _controller: GdeGestionDocEcoleBundle:D04:delete_row_d04_json }

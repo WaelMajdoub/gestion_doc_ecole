@@ -91,29 +91,11 @@ class D04Controller extends Controller
         // Si la requête est en POST
         if ($request->isMethod('POST')) 
         {
-            //essai
-            //
-            //
-            /*
-            $repository = $this->getDoctrine()
-                                ->getManager()
-                                ->getRepository('GdeGestionDocEcoleBundle:D01Periode');
-            $d01 = $repository->findOneBy(array('id' => $_POST['form']['d01']));
-            //$form['modelData']->setD01($d01);
-            
-            $d04->setD01($d01);*/
-            //
-            //
-            //
-            //
-            //
-            //
             // On fait le lien Requête <-> Formulaire
-            // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
+            // À partir de maintenant, la variable $form contient les valeurs entrées dans le formulaire par le visiteur
             $form->handleRequest($request);
 
             // On vérifie que les valeurs entrées sont correctes
-            // (Nous verrons la validation des objets en détail dans le prochain chapitre)
             if ($form->isValid()) 
             {
                 $em = $this->getDoctrine()->getManager();
