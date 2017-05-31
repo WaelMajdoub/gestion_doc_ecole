@@ -13,9 +13,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Gde\GestionDocEcoleBundle\Entity\D01Periode;
+use Gde\GestionDocEcoleBundle\Entity\D02Branche;
+use Gde\GestionDocEcoleBundle\Entity\D03Type;
 use Gde\GestionDocEcoleBundle\Entity\D04Document;
 use Gde\GestionDocEcoleBundle\Entity\D80Utilisateur;
 
@@ -26,6 +30,9 @@ use Gde\GestionDocEcoleBundle\ClasseDivers\SortArrayClasseDivers;
 use Gde\GestionDocEcoleBundle\ClasseDivers\PrepareArrayChoiseTypeSimpleClasseDivers;
 
 use JMS\Serializer\SerializerBuilder;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class D04Controller extends Controller
 {
@@ -48,6 +55,7 @@ class D04Controller extends Controller
          */
         $d04 = new D04Document();
         $d04->setD80($d80);
+        $d04->setDate(date_create('2009-01-02'));
         /*
          * Préparation du tableau de ChoiceType
          */
@@ -65,29 +73,53 @@ class D04Controller extends Controller
          * Création d'un formulaire pour D04Document
          */
         $formBuilder = $this->createFormBuilder($d04);
-        $formBuilder->add('d01',    ChoiceType::class,array('label' => 'select some colors',
+        $formBuilder->add('d01',    EntityType::class,array(
+                                                'class' => 'GdeGestionDocEcoleBundle:D01Periode',
+                                                'choice_label' => 'nom',
+                                                ))
+        /*$formBuilder->add('d01',    ChoiceType::class,array('label' => 'select some colors',
                                                 'multiple' => false,
                                                 'choices' => $array_ct_d01->getArray(),
                                                 'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1))
+                                                'data'=> 1,
+                                                'constraints' => array(
+                                                    new NotBlank(),
+                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D01Periode::class)
+                                                    )
+                                                ))*/
+                    //->add('job','d01', array('class' => 'GdeGestionDocEcoleBundle:D01Periode'))
                     ->add('d02',    ChoiceType::class,array('label' => 'select some colors',
                                                 'multiple' => false,
                                                 'choices' => $array_ct_d02->getArray(),
                                                 'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1))
+                                                'data'=> 1,
+                                                'constraints' => array(
+                                                    new NotBlank(),
+                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D02Branche::class)
+                                                    )
+                                                ))
+                    //->add('job','d02', array('class' => 'GdeGestionDocEcoleBundle:D02Branche'))
                     ->add('d03',    ChoiceType::class,array('label' => 'select some colors',
                                                 'multiple' => false,
                                                 'choices' => $array_ct_d03->getArray(),
                                                 'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1))
-                    //->add('date',   DateType::class)
+                                                'data'=> 1,
+                                                 'constraints' => array(
+                                                    new NotBlank(),
+                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D03Type::class)
+                                                    )
+                                                ))
+                    //->add('job','d03', array('class' => 'GdeGestionDocEcoleBundle:D03Type'))                            
                     ->add('date', DateType::class, array(
                                                 'widget' => 'single_text',
                                                 // do not render as type="date", to avoid HTML5 date pickers
                                                 'html5' => false,
                                                 // add a class that can be selected in JavaScript
                                                 'attr' => ['class' => 'datepicker'],
-                    ))
+                                                'constraints' => array(
+                                                    new NotBlank(),
+                                                    new Type(\DateTime::class),
+                                                )))
                     ->add('texte',  TextType::class)
                     ->add('pdf',    TextType::class)
                     ->add('save',   SubmitType::class);
@@ -96,6 +128,23 @@ class D04Controller extends Controller
         // Si la requête est en POST
         if ($request->isMethod('POST')) 
         {
+            //essai
+            //
+            //
+            /*
+            $repository = $this->getDoctrine()
+                                ->getManager()
+                                ->getRepository('GdeGestionDocEcoleBundle:D01Periode');
+            $d01 = $repository->findOneBy(array('id' => $_POST['form']['d01']));
+            //$form['modelData']->setD01($d01);
+            
+            $d04->setD01($d01);*/
+            //
+            //
+            //
+            //
+            //
+            //
             // On fait le lien Requête <-> Formulaire
             // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
             $form->handleRequest($request);
@@ -116,6 +165,11 @@ class D04Controller extends Controller
                     'success' => 1,
                     'd04' => $d04));
             }
+            else
+                return $this->render('GdeGestionDocEcoleBundle:Debug:debug_form.html.twig',array(
+                    'request' => $request,
+                    'form' => $form,
+                    'post' => $_POST));
         }
         else
         {
