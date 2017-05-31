@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints\Type;
 class D04Controller extends Controller
 {
     /**
-     * @name        nouveau_form_d04Action()
+     * Nouvelle saisie
      * @param       Request $request
      * @return      void
      */
@@ -55,7 +55,6 @@ class D04Controller extends Controller
          */
         $d04 = new D04Document();
         $d04->setD80($d80);
-        //$d04->setDate(date_create('2009-01-02'));
         /*
          * Création d'un formulaire pour D04Document
          */
@@ -88,22 +87,18 @@ class D04Controller extends Controller
                     ->add('save',   SubmitType::class);
         $form = $formBuilder->setMethod("POST")
                             ->setAction('nouveau_form_d04')->getForm();
-        // Si la requête est en POST
+        /*
+         * Test s'il y a une requete de type post
+         */
         if ($request->isMethod('POST')) 
         {
-            // On fait le lien Requête <-> Formulaire
-            // À partir de maintenant, la variable $form contient les valeurs entrées dans le formulaire par le visiteur
             $form->handleRequest($request);
-
-            // On vérifie que les valeurs entrées sont correctes
             if ($form->isValid()) 
             {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($d04);
                 $em->flush();
-
-                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
+                $request->getSession()->getFlashBag()->add('notice', 'Enregistrement avec succès.');
                 return $this->render('GdeGestionDocEcoleBundle:D04:nouveau_form_d04.html.twig',array(
                     'sw_edit' => 2,
                     'form' => $form->createView(),
@@ -126,7 +121,7 @@ class D04Controller extends Controller
         }
     }
     /**
-     * @name        table_d04Action()
+     * Affiche la table
      * @return      twig
      */
     public function table_d04Action()
@@ -134,9 +129,9 @@ class D04Controller extends Controller
         return $this->render('GdeGestionDocEcoleBundle:D04:table_d04.html.twig');
     }
     /**
-     * @name    table_d04_jsonAction()
-     * @param   $sort
-     * @param   $sens
+     * Prépare un fichier json de la table, trié par les paramètres d'entrée
+     * @param   $sort   Champs à trier
+     * @param   $sens   Sens du tri
      * @return  json
      */
     public function table_d04_jsonAction($sort,$sens)
@@ -144,9 +139,9 @@ class D04Controller extends Controller
         // Chargement de l'entité
         $em = $this->get('doctrine')->getManager();
         $table = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D04Document')->findAll();
-        // Serialisation de l'entité vers Json
+        // Entité vers Json
         $json = json_encode($table);
-        // Passage du json en array php pure pour utiliser la classe 
+        // Json vers array
         $array['data'] = json_decode($json, true);
         switch ($sort)
         {
@@ -181,10 +176,9 @@ class D04Controller extends Controller
             $array = $sort_array->getSortDescStr();
         $response = json_encode($array);
         return new Response($response);
-        //return $this->render('GdeGestionDocEcoleBundle:Debug:vardump.html.twig',array('var' => $array));
     }
     /**
-     * @name    delete_row_d04_jsonAction()
+     * Efface un champ de la table d01 par une methode find() sur la clé
      * @param   $id
      * @return json
      */
@@ -195,18 +189,15 @@ class D04Controller extends Controller
          */
         $em = $this->getDoctrine()->getEntityManager();
         $table = $em->getRepository('GdeGestionDocEcoleBundle:D04Document')->find($id);
-        if (!$table) {
-            throw $this->createNotFoundException('No guest found for id '.$id);
+        if (!$table) 
+        {
+            throw $this->createNotFoundException('Impossible d\'effacer dans d04 l\'id '.$id);
         }
         $em->remove($table);
         $em->flush();
         /*
          * Serialisation de l'entité vers Json
          */
-        /* ANCIENE METHODE
-        $serializer = $this->get('jms_serializer');
-         */
-        /* NOUVELLE METHODE */
         $serializer = SerializerBuilder::create()->build();
         $response = $serializer->serialize($table,'json');
         /*

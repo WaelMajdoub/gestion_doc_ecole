@@ -31,7 +31,7 @@ use JMS\Serializer\SerializerBuilder;
 class D02Controller extends Controller
 {
     /**
-     * @name        nouveau_form_d02Action()
+     * Nouvelle saisie
      * @param       Request $request
      * @return      void
      */
@@ -57,23 +57,18 @@ class D02Controller extends Controller
                     ->add('save',       SubmitType::class);
         $form = $formBuilder->setMethod("POST")
                             ->setAction('nouveau_form_d02')->getForm();
-        // Si la requête est en POST
+        /*
+         * Test s'il y a une requete de type post
+         */
         if ($request->isMethod('POST')) 
         {
-            // On fait le lien Requête <-> Formulaire
-            // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
             $form->handleRequest($request);
-
-            // On vérifie que les valeurs entrées sont correctes
-            // (Nous verrons la validation des objets en détail dans le prochain chapitre)
             if ($form->isValid()) 
             {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($d02);
                 $em->flush();
-
-                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
+                $request->getSession()->getFlashBag()->add('notice', 'Enregistrement avec succès.');
                 return $this->render('GdeGestionDocEcoleBundle:D02:nouveau_form_d02.html.twig',array(
                     'sw_edit' => 2,
                     'form' => $form->createView(),
@@ -99,9 +94,9 @@ class D02Controller extends Controller
         return $this->render('GdeGestionDocEcoleBundle:D02:table_d02.html.twig');
     }
     /**
-     * @name    table_d02_jsonAction()
-     * @param   $sort
-     * @param   $sens
+     * Prépare un fichier json de la table, trié par les paramètres d'entrée
+     * @param   $sort   Champs à trier
+     * @param   $sens   Sens du tri
      * @return  json
      */
     public function table_d02_jsonAction($sort,$sens)
@@ -109,9 +104,9 @@ class D02Controller extends Controller
         // Chargement de l'entité
         $em = $this->get('doctrine')->getManager();
         $table = $this->get('doctrine')->getRepository('GdeGestionDocEcoleBundle:D02Branche')->findAll();
-        // Serialisation de l'entité vers Json
+        // Entité vers Json
         $json = json_encode($table);
-        // Passage du json en array php pure pour utiliser la classe 
+        // Json vers array 
         $array['data'] = json_decode($json, true);
         switch ($sort)
         {
@@ -131,10 +126,9 @@ class D02Controller extends Controller
             $array = $sort_array->getSortDescStr();
         $response = json_encode($array);
         return new Response($response);
-        //return $this->render('GdeGestionDocEcoleBundle:Debug:vardump.html.twig',array('var' => $array));
     }
     /**
-     * @name    delete_row_d02_jsonAction()
+     * Efface un champ de la table d01 par une methode find() sur la clé
      * @param   $id
      * @return json
      */
@@ -145,18 +139,15 @@ class D02Controller extends Controller
          */
         $em = $this->getDoctrine()->getEntityManager();
         $table = $em->getRepository('GdeGestionDocEcoleBundle:D02Branche')->find($id);
-        if (!$table) {
-            throw $this->createNotFoundException('No guest found for id '.$id);
+        if (!$table) 
+        {
+            throw $this->createNotFoundException('Impossible d\'effacer dans d02 l\'id '.$id);
         }
         $em->remove($table);
         $em->flush();
         /*
          * Serialisation de l'entité vers Json
          */
-        /* ANCIENE METHODE
-        $serializer = $this->get('jms_serializer');
-         */
-        /* NOUVELLE METHODE */
         $serializer = SerializerBuilder::create()->build();
         $response = $serializer->serialize($table,'json');
         /*
