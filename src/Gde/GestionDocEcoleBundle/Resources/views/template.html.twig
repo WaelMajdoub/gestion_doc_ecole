@@ -142,7 +142,8 @@
                                         <img src="{{asset('img/placeholders/avatars/avatar2.jpg')}}" alt="avatar">
                                     </a>
                                 </div>
-                                <div class="sidebar-user-name">Stéphane Bressani</div>
+                                   {# app.user.username #}
+                                <div class="sidebar-user-name">{{ app.user ? 'Stéphane' : 'Invité' }} </div>
                                 <div class="sidebar-user-links">
                                     <a href="logout" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="gi gi-exit"></i></a>
                                 </div>
