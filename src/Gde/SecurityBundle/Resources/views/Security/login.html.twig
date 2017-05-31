@@ -1,0 +1,68 @@
+{% extends 'GdeGestionDocEcoleBundle::/template.html.twig' %}
+{% block title %}Login{% endblock %}
+{% block stylesheets %}{% endblock %}
+{% block search %}
+<div class="form-group">
+    <input ng-model="query" id="top-search" class="form-control" placeholder="Rechercher..." disabled="false" type="text">
+</div>
+{% endblock %}
+{% block body %}
+    
+<!-- Page content -->
+<div id="page-content">
+    <!-- Header -->
+    <div class="content-header">
+        <div class="header-section">
+            <h1>
+                <i class="fa fa-database"></i>Dashboard </i><br><small>Login</small>
+            </h1>
+        </div>
+    </div>
+    
+    {% if error %}
+        <!-- Info Bulle-->
+        <div>
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>               
+                <i class="fa fa-info-circle"></i>  <strong>Erreur</strong> {{ error.message }}
+            </div>
+        </div>
+        <!-- END Info Bulle-->
+    {% endif %}
+        
+    <!-- Content -->
+    <div class="block full">
+        <div class="block-title">
+            <h2><strong>Login</strong></h2>
+        </div>
+        <div>    
+            {# Le formulaire, avec URL de soumission vers la route « login_check » comme on l'a vu #}
+            <form action="{{ path('login_check') }}" method="post">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <label for="username">E-Mail :</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="text" id="username" name="_username" value="{{ last_email }}" />
+                    </div>
+                </div>
+                <br />&nbsp;
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <label for="username">Mot de passe :</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="password" id="password" name="_password" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="submit" value="Connexion" class="btn btn-primary bt-pull-right pull-right" />
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+    <!-- END Content -->
+</div>
+{% endblock %}

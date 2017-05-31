@@ -5,3 +5,14 @@ gde_gestion_doc_ecole:
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+    
+login:
+    path:   /login
+    defaults:
+        _controller: GdeSecurityBundle:Security:login
+        
+login_check:
+    path:   /login_check
+    
+logout:
+    path:   /logout

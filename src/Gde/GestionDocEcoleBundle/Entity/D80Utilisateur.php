@@ -3,6 +3,7 @@
 namespace Gde\GestionDocEcoleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+//use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * D80Utilisateur
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="d80_utilisateur")
  * @ORM\Entity(repositoryClass="Gde\GestionDocEcoleBundle\Repository\D80UtilisateurRepository")
  */
-class D80Utilisateur
+class D80Utilisateur //implements UserInterface
 {
     /**
      * @var int
@@ -48,6 +49,23 @@ class D80Utilisateur
      * @ORM\Column(name="photo", type="string", length=255)
      */
     private $photo;
+    
+    // Implementation
+    /*
+    public function getUsername()
+    {
+        return $this->user;
+    }
+    
+    public function getRoles() 
+    {
+        return "";
+    }
+    
+    public function getSalt() 
+    {
+        return "";
+    }*/
 
     /**
      * Get id

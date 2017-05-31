@@ -74,10 +74,10 @@ class D04Controller extends Controller
                     ->add('date', DateType::class, array(
                                                 'widget' => 'single_text',
                                                 // do not render as type="date", to avoid HTML5 date pickers
-                                                'html5' => true,
+                                                //'html5' => true,
                                                 'format' => 'yyyy-MM-dd',
                                                 // add a class that can be selected in JavaScript
-                                                'attr' => ['class' => 'no-datepicker'],
+                                                'attr' => ['class' => 'datepicker'],
                                                 'constraints' => array(
                                                     new NotBlank(),
                                                     new Type(\DateTime::class),
