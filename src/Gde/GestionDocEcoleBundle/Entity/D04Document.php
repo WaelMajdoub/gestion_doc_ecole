@@ -75,6 +75,12 @@ class D04Document implements JsonSerializable
      */
     private $pdf;
     
+    
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+    }
+    
     /**
      * Tableau pour json
      * @return array

@@ -55,20 +55,7 @@ class D04Controller extends Controller
          */
         $d04 = new D04Document();
         $d04->setD80($d80);
-        $d04->setDate(date_create('2009-01-02'));
-        /*
-         * Préparation du tableau de ChoiceType
-         */
-        $em = $this->getDoctrine()->getManager();
-        // TypeChoices pour D01Periode
-        $table = $em->getRepository('GdeGestionDocEcoleBundle:D01Periode')->findAll();
-        $array_ct_d01 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
-        // TypeChoices pour D02Branche
-        $table = $em->getRepository('GdeGestionDocEcoleBundle:D02Branche')->findAll();
-        $array_ct_d02 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
-        // TypeChoices pour D03Type
-        $table = $em->getRepository('GdeGestionDocEcoleBundle:D03Type')->findAll();
-        $array_ct_d03 = new PrepareArrayChoiseTypeSimpleClasseDivers($table,'id','nom');
+        //$d04->setDate(date_create('2009-01-02'));
         /*
          * Création d'un formulaire pour D04Document
          */
@@ -77,43 +64,19 @@ class D04Controller extends Controller
                                                 'class' => 'GdeGestionDocEcoleBundle:D01Periode',
                                                 'choice_label' => 'nom',
                                                 ))
-        /*$formBuilder->add('d01',    ChoiceType::class,array('label' => 'select some colors',
-                                                'multiple' => false,
-                                                'choices' => $array_ct_d01->getArray(),
-                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1,
-                                                'constraints' => array(
-                                                    new NotBlank(),
-                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D01Periode::class)
-                                                    )
-                                                ))*/
-                    //->add('job','d01', array('class' => 'GdeGestionDocEcoleBundle:D01Periode'))
-                    ->add('d02',    ChoiceType::class,array('label' => 'select some colors',
-                                                'multiple' => false,
-                                                'choices' => $array_ct_d02->getArray(),
-                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1,
-                                                'constraints' => array(
-                                                    new NotBlank(),
-                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D02Branche::class)
-                                                    )
+                    ->add('d02',    EntityType::class,array(
+                                                'class' => 'GdeGestionDocEcoleBundle:D02Branche',
+                                                'choice_label' => 'nom',
                                                 ))
-                    //->add('job','d02', array('class' => 'GdeGestionDocEcoleBundle:D02Branche'))
-                    ->add('d03',    ChoiceType::class,array('label' => 'select some colors',
-                                                'multiple' => false,
-                                                'choices' => $array_ct_d03->getArray(),
-                                                'attr'=>array('style'=>'', 'customattr'=>'customdata'),
-                                                'data'=> 1,
-                                                 'constraints' => array(
-                                                    new NotBlank(),
-                                                    new Type(\Gde\GestionDocEcoleBundle\Entity\D03Type::class)
-                                                    )
-                                                ))
-                    //->add('job','d03', array('class' => 'GdeGestionDocEcoleBundle:D03Type'))                            
+                    ->add('d03',    EntityType::class,array(
+                                                'class' => 'GdeGestionDocEcoleBundle:D03Type',
+                                                'choice_label' => 'nom',
+                                                ))                           
                     ->add('date', DateType::class, array(
                                                 'widget' => 'single_text',
                                                 // do not render as type="date", to avoid HTML5 date pickers
                                                 'html5' => false,
+                                                //'format' => 'yyyy-MM-dd',
                                                 // add a class that can be selected in JavaScript
                                                 'attr' => ['class' => 'datepicker'],
                                                 'constraints' => array(
