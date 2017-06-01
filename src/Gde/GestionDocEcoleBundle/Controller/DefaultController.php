@@ -103,6 +103,11 @@ class DefaultController extends Controller
                             }
                             elseif (is_string($v))
                                 $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(\''.addslashes ($v).'\');'.$cr;
+                            elseif (is_array($v))
+                            {
+                                //$d80->setRoles(array('ROLE_USER'));
+                                $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'(array(\'ROLE_USER\'));'.$cr;
+                            }
                             else
                                 $data .= "      $".strtolower($DB_Table[$i][0]).strtolower($DB_Table[$i][1]).strtolower($DB_Table[$i][2]).'->set'.ucfirst($k).'('.$v.');'.$cr;
                         }

@@ -203,7 +203,7 @@ class D80Utilisateur implements UserInterface
      *
      * @return D80Utilisateur
      */
-    public function setRole($roles)
+    public function setRoles($roles)
     {
         $this->roles = $roles;
 
