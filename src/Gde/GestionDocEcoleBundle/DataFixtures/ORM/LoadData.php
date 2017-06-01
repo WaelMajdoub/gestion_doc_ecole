@@ -24,10 +24,12 @@ class LoadD00Data implements FixtureInterface
       $d80_array = [];
       // 12
       $d80 = new D80Utilisateur();
-      $d80->setUser('Stéphane');
+      $d80->setUsername('Stéphane');
       $d80->setEmail('s.bressani@bluewin.ch');
       $d80->setPassword('awesome');
       $d80->setPhoto('null');
+      $d80->setSalt('');
+      $d80->setRole(array('ROLE_USER'));
       $manager->persist($d80);
       $manager->flush();
       $d80_array[12] = $d80;

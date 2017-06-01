@@ -3,7 +3,7 @@
 namespace Gde\GestionDocEcoleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * D80Utilisateur
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="d80_utilisateur")
  * @ORM\Entity(repositoryClass="Gde\GestionDocEcoleBundle\Repository\D80UtilisateurRepository")
  */
-class D80Utilisateur //implements UserInterface
+class D80Utilisateur implements UserInterface
 {
     /**
      * @var int
@@ -25,9 +25,9 @@ class D80Utilisateur //implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="user", type="string", length=255)
+     * @ORM\Column(name="user", type="string", length=255, unique=true)
      */
-    private $user;
+    private $username;
 
     /**
      * @var string
@@ -50,22 +50,21 @@ class D80Utilisateur //implements UserInterface
      */
     private $photo;
     
-    // Implementation
-    /*
-    public function getUsername()
-    {
-        return $this->user;
-    }
+    /**
+     * @var string
+     * 
+     * @ORM\Column(name="salt", type="string", length=255)
+     */
+    private $salt;
+
+    /**
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles = array();
     
-    public function getRoles() 
+    public function eraseCredentials()
     {
-        return "";
     }
-    
-    public function getSalt() 
-    {
-        return "";
-    }*/
 
     /**
      * Get id
@@ -80,13 +79,13 @@ class D80Utilisateur //implements UserInterface
     /**
      * Set user
      *
-     * @param string $user
+     * @param string $username
      *
      * @return D80Utilisateur
      */
-    public function setUser($user)
+    public function setUsername($username)
     {
-        $this->user = $user;
+        $this->username = $username;
 
         return $this;
     }
@@ -96,9 +95,9 @@ class D80Utilisateur //implements UserInterface
      *
      * @return string
      */
-    public function getUser()
+    public function getUsername()
     {
-        return $this->user;
+        return $this->username;
     }
 
     /**
@@ -171,6 +170,54 @@ class D80Utilisateur //implements UserInterface
     public function getPhoto()
     {
         return $this->photo;
+    }
+    
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return D80Utilisateur
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+    
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return D80Utilisateur
+     */
+    public function setRole($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return string
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }
 
